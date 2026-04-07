@@ -51,7 +51,7 @@ export default function LoginPage({ searchParams }) {
           Welcome to RooferLedger
         </h2>
         <p style={{ color: '#8b949e', marginBottom: '2rem' }}>
-          Sign in or create a new corporate account below.
+          Sign in or create a new business account below.
         </p>
 
         {searchParams?.message && (

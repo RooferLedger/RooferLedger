@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { LayoutDashboard, Users, FileText, Settings, LogOut } from 'lucide-react'
+import { signOutAction } from '../actions'
 
 export default function DashboardLayout({ children }) {
   const pathname = usePathname()
@@ -38,8 +39,8 @@ export default function DashboardLayout({ children }) {
         </nav>
         
         <div style={{ marginTop: 'auto' }}>
-          <form action="/api/auth/logout" method="POST">
-            <button type="submit" className="sidebar-link" style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer' }}>
+          <form action={signOutAction}>
+            <button type="submit" className="sidebar-link" style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--danger)' }}>
               <LogOut size={20} />
               <span>Sign Out</span>
             </button>

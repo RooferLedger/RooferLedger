@@ -21,7 +21,11 @@ export default function NewClientPage() {
 
   const onSubmit = async (data) => {
     try {
-      await createClientRecord(data)
+      const res = await createClientRecord(data)
+      if (res?.error) {
+        alert("Server Error: " + res.error)
+        return
+      }
       alert("Client saved securely to cloud database!")
       router.push('/dashboard/clients')
     } catch (error) {

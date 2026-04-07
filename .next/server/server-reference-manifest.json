@@ -20,12 +20,14 @@
       "workers": {
         "app/dashboard/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fpelhaminsightsllc%2F.gemini%2Fantigravity%2Fscratch%2FRoofer_Invoicing_SaaS%2Fapp%2Factions.js%22%2C%5B%22signOutAction%22%5D%5D%5D&__client_imported__=true!",
         "app/dashboard/clients/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fpelhaminsightsllc%2F.gemini%2Fantigravity%2Fscratch%2FRoofer_Invoicing_SaaS%2Fapp%2Factions.js%22%2C%5B%22signOutAction%22%5D%5D%5D&__client_imported__=true!",
-        "app/dashboard/clients/new/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fpelhaminsightsllc%2F.gemini%2Fantigravity%2Fscratch%2FRoofer_Invoicing_SaaS%2Fapp%2Fdashboard%2Fclients%2Factions.js%22%2C%5B%22createClientRecord%22%5D%5D%2C%5B%22%2FUsers%2Fpelhaminsightsllc%2F.gemini%2Fantigravity%2Fscratch%2FRoofer_Invoicing_SaaS%2Fapp%2Factions.js%22%2C%5B%22signOutAction%22%5D%5D%5D&__client_imported__=true!"
+        "app/dashboard/clients/new/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fpelhaminsightsllc%2F.gemini%2Fantigravity%2Fscratch%2FRoofer_Invoicing_SaaS%2Fapp%2Fdashboard%2Fclients%2Factions.js%22%2C%5B%22createClientRecord%22%5D%5D%2C%5B%22%2FUsers%2Fpelhaminsightsllc%2F.gemini%2Fantigravity%2Fscratch%2FRoofer_Invoicing_SaaS%2Fapp%2Factions.js%22%2C%5B%22signOutAction%22%5D%5D%5D&__client_imported__=true!",
+        "app/dashboard/invoices/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fpelhaminsightsllc%2F.gemini%2Fantigravity%2Fscratch%2FRoofer_Invoicing_SaaS%2Fapp%2Factions.js%22%2C%5B%22signOutAction%22%5D%5D%5D&__client_imported__=true!"
       },
       "layer": {
         "app/dashboard/page": "action-browser",
         "app/dashboard/clients/page": "action-browser",
-        "app/dashboard/clients/new/page": "action-browser"
+        "app/dashboard/clients/new/page": "action-browser",
+        "app/dashboard/invoices/page": "action-browser"
       }
     },
     "9463bffefd268af32871b0379a1ca3d8eee9826b": {

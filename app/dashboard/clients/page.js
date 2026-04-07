@@ -47,32 +47,64 @@ export default async function ClientsPage() {
           </Link>
         </div>
       ) : (
-        <div className="table-container">
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Contact</th>
-                <th>Address</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {safeClients.map((client) => (
-                <tr key={client.id}>
-                  <td style={{ fontWeight: 'bold' }}>{client.first_name} {client.last_name}</td>
-                  <td>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', color: '#8b949e' }}>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Mail size={14} /> {client.email || 'N/A'}</span>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Phone size={14} /> {client.phone}</span>
-                    </div>
-                  </td>
-                  <td style={{ color: '#8b949e' }}>{client.address}</td>
-                  <td><Link href={`/dashboard/clients/${client.id}`} style={{ color: 'var(--primary)', fontWeight: 'bold' }}>View</Link></td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          {safeClients.map((client) => {
+            const initials = `${client.first_name?.[0] || ''}${client.last_name?.[0] || ''}`.toUpperCase();
+            
+            return (
+              <Link 
+                href={`/dashboard/clients/${client.id}`} 
+                key={client.id}
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'minmax(0, 1.5fr) minmax(0, 1.5fr) minmax(0, 2fr) auto',
+                  alignItems: 'center',
+                  gap: '1.5rem',
+                  padding: '1.5rem',
+                  backgroundColor: 'var(--card-bg)',
+                  border: '1px solid var(--card-border)',
+                  borderRadius: '12px',
+                  textDecoration: 'none',
+                  transition: 'all 0.2s ease',
+                  cursor: 'pointer'
+                }}
+                className="client-row-card"
+              >
+                {/* Name & Avatar */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', overflow: 'hidden' }}>
+                  <div style={{ flexShrink: 0, width: '40px', height: '40px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--primary) 0%, #3a82f6 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '1rem', fontWeight: 'bold' }}>
+                    {initials}
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+                    <span style={{ fontWeight: '600', color: 'var(--foreground)', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
+                      {client.first_name} {client.last_name}
+                    </span>
+                    <span style={{ fontSize: '0.85rem', color: '#8b949e', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <Phone size={12} /> {client.phone}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Email */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#8b949e', fontSize: '0.9rem', overflow: 'hidden' }}>
+                  <Mail size={16} style={{ flexShrink: 0 }} />
+                  <span style={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
+                    {client.email || 'No email'}
+                  </span>
+                </div>
+
+                {/* Address */}
+                <div style={{ color: '#8b949e', fontSize: '0.9rem', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
+                  {client.address}
+                </div>
+
+                {/* Actions */}
+                <div style={{ color: 'var(--primary)', fontWeight: '600', fontSize: '0.9rem', padding: '0.5rem 1rem', backgroundColor: 'rgba(88, 166, 255, 0.1)', borderRadius: '999px' }}>
+                  View Profile
+                </div>
+              </Link>
+            )
+          })}
         </div>
       )}
     </div>

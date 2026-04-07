@@ -32,13 +32,14 @@ export async function POST(request) {
 
     const invoiceData = {
       invoiceId: `INV-${Date.now().toString().slice(-4)}`,
-      date: new Date().toLocaleDateString(),
+      date: data.customDate || new Date().toLocaleDateString(),
       clientName: `${clientData.first_name} ${clientData.last_name}`,
       subtotal,
       tax,
       total,
       lineItems: data.lineItems,
-      companyName: orgData?.name || 'RooferLedger'
+      companyName: orgData?.name || 'RooferLedger',
+      notes: data.notes
     }
 
     // 4. Persistence into Supabase Database
@@ -50,6 +51,7 @@ export async function POST(request) {
       subtotal,
       tax,
       total,
+      notes: data.notes,
       due_date: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString() // Net 14 by default
     }).select().single()
 

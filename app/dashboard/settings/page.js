@@ -51,36 +51,35 @@ export default function SettingsPage() {
     </div>
   )
 
+  const handleSubscribe = async () => {
+    try {
+      const response = await fetch('/api/stripe/checkout', { method: 'POST' })
+      const data = await response.json()
+      if (data.url) {
+        window.location.href = data.url
+      } else {
+        alert("Failed to initiate checkout.")
+      }
+    } catch (e) {
+      console.error(e)
+      alert("Billing server error.")
+    }
+  }
+
   const renderBilling = () => (
     <div className="form-card">
       <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>Subscription & Billing</h2>
-      
-      <div style={{ backgroundColor: 'rgba(47, 129, 247, 0.1)', border: '1px solid var(--primary)', borderRadius: '12px', padding: '2rem', marginBottom: '2rem' }}>
+
+      <div style={{ backgroundColor: 'rgba(47, 129, 247, 0.05)', border: '1px solid rgba(47, 129, 247, 0.2)', borderRadius: '12px', padding: '2rem', marginBottom: '2rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
-            <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: 'var(--primary)' }}>Pro Tier</h3>
-            <p style={{ color: '#8b949e', margin: 0 }}>$49.00 / month. Renews on May 1st, 2026.</p>
+            <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: 'var(--foreground)' }}>RooferLedger Core <em>(Beta)</em></h3>
+            <p style={{ color: '#8b949e', margin: 0 }}>Unlock infinite invoice generation, Twilio SMS, and Resend capabilities.</p>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--success)' }}>
-            <CheckCircle2 size={18} />
-            <span style={{ fontWeight: 'bold' }}>Active</span>
-          </div>
+          <button onClick={handleSubscribe} className="btn btn-primary" style={{ width: 'auto', padding: '0.75rem 2rem', fontSize: '1rem', fontWeight: 'bold' }}>
+            Subscribe Now
+          </button>
         </div>
-      </div>
-
-      <div className="input-grid" style={{ gridTemplateColumns: '1fr' }}>
-        <div>
-          <label className="input-label">Payment Method</label>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1rem', border: '1px solid var(--border)', borderRadius: '8px' }}>
-            <CreditCard color="#8b949e" />
-            <span style={{ color: 'var(--foreground)' }}>Visa ending in 4242</span>
-            <button className="btn btn-secondary" style={{ marginLeft: 'auto', padding: '0.25rem 0.75rem', fontSize: '0.8rem', width: 'auto' }}>Update</button>
-          </div>
-        </div>
-      </div>
-
-      <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '3rem', borderTop: '1px solid var(--border)', paddingTop: '2rem' }}>
-        <button className="btn btn-secondary" style={{ width: 'auto', color: 'var(--danger)', borderColor: 'rgba(248, 81, 73, 0.3)' }}>Cancel Subscription</button>
       </div>
     </div>
   )

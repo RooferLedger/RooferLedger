@@ -6,6 +6,7 @@ import { ClientSchema } from '../../../../lib/schemas' // Fix path dynamically i
 import { ArrowLeft, Save } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { createClientRecord } from '../actions'
 
 export default function NewClientPage() {
   const router = useRouter()
@@ -19,23 +20,13 @@ export default function NewClientPage() {
   })
 
   const onSubmit = async (data) => {
-    // Simulate network delay
-    await new Promise((r) => setTimeout(r, 500))
-    
-    // Save to localStorage for functional prototyping
-    const existingClients = JSON.parse(localStorage.getItem('mockClients') || '[]')
-    const newClient = {
-      id: Math.random().toString(36).substr(2, 9),
-      first_name: data.firstName,
-      last_name: data.lastName,
-      email: data.email,
-      phone: data.phone,
-      address: data.address
+    try {
+      await createClientRecord(data)
+      alert("Client saved securely to cloud database!")
+      router.push('/dashboard/clients')
+    } catch (error) {
+      alert("Failed to save client: " + error.message)
     }
-    localStorage.setItem('mockClients', JSON.stringify([newClient, ...existingClients]))
-
-    alert("Client saved successfully!")
-    router.push('/dashboard/clients')
   }
 
   return (

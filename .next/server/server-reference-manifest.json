@@ -1,5 +1,42 @@
 {
-  "node": {},
+  "node": {
+    "0d03ee350b7944b92a9b3f1dda84f675d53d206a": {
+      "workers": {
+        "app/login/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fpelhaminsightsllc%2F.gemini%2Fantigravity%2Fscratch%2FRoofer_Invoicing_SaaS%2Fapp%2Flogin%2Fpage.js%22%2C%5B%22%24%24ACTION_1%22%2C%22%24%24ACTION_0%22%5D%5D%5D&__client_imported__=!"
+      },
+      "layer": {
+        "app/login/page": "rsc"
+      }
+    },
+    "146228fbb77279507cfecdae94c1aab8c08e4388": {
+      "workers": {
+        "app/login/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fpelhaminsightsllc%2F.gemini%2Fantigravity%2Fscratch%2FRoofer_Invoicing_SaaS%2Fapp%2Flogin%2Fpage.js%22%2C%5B%22%24%24ACTION_1%22%2C%22%24%24ACTION_0%22%5D%5D%5D&__client_imported__=!"
+      },
+      "layer": {
+        "app/login/page": "rsc"
+      }
+    },
+    "86c919296152e983b7daecb8112239ab702ec5bf": {
+      "workers": {
+        "app/dashboard/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fpelhaminsightsllc%2F.gemini%2Fantigravity%2Fscratch%2FRoofer_Invoicing_SaaS%2Fapp%2Factions.js%22%2C%5B%22signOutAction%22%5D%5D%5D&__client_imported__=true!",
+        "app/dashboard/clients/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fpelhaminsightsllc%2F.gemini%2Fantigravity%2Fscratch%2FRoofer_Invoicing_SaaS%2Fapp%2Factions.js%22%2C%5B%22signOutAction%22%5D%5D%5D&__client_imported__=true!",
+        "app/dashboard/clients/new/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fpelhaminsightsllc%2F.gemini%2Fantigravity%2Fscratch%2FRoofer_Invoicing_SaaS%2Fapp%2Fdashboard%2Fclients%2Factions.js%22%2C%5B%22createClientRecord%22%5D%5D%2C%5B%22%2FUsers%2Fpelhaminsightsllc%2F.gemini%2Fantigravity%2Fscratch%2FRoofer_Invoicing_SaaS%2Fapp%2Factions.js%22%2C%5B%22signOutAction%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/dashboard/page": "action-browser",
+        "app/dashboard/clients/page": "action-browser",
+        "app/dashboard/clients/new/page": "action-browser"
+      }
+    },
+    "9463bffefd268af32871b0379a1ca3d8eee9826b": {
+      "workers": {
+        "app/dashboard/clients/new/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fpelhaminsightsllc%2F.gemini%2Fantigravity%2Fscratch%2FRoofer_Invoicing_SaaS%2Fapp%2Fdashboard%2Fclients%2Factions.js%22%2C%5B%22createClientRecord%22%5D%5D%2C%5B%22%2FUsers%2Fpelhaminsightsllc%2F.gemini%2Fantigravity%2Fscratch%2FRoofer_Invoicing_SaaS%2Fapp%2Factions.js%22%2C%5B%22signOutAction%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/dashboard/clients/new/page": "action-browser"
+      }
+    }
+  },
   "edge": {},
-  "encryptionKey": "vRWdjDA76IX0DICz0r8eq3ujHclN6MnGhfP92v9Ls30="
+  "encryptionKey": "ZXqCI/O/QLR9hOquIo625SLkirnzi778qyYX7wJg71g="
 }

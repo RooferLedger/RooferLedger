@@ -1,0 +1,26 @@
+{
+  "name": "rooferledger",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "next": "^14.2.3",
+    "@supabase/supabase-js": "^2.42.0",
+    "@supabase/ssr": "^0.1.0",
+    "stripe": "^15.1.0",
+    "react-hook-form": "^7.51.2",
+    "zod": "^3.22.4",
+    "@hookform/resolvers": "^3.3.4",
+    "lucide-react": "^0.368.0",
+    "clsx": "^2.1.0",
+    "tailwind-merge": "^2.2.2",
+    "@react-pdf/renderer": "^3.4.2"
+  }
+}

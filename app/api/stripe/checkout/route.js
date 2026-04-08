@@ -4,6 +4,13 @@ import Stripe from 'stripe'
 
 export async function POST(request) {
   try {
+    let bodyData = {}
+    try {
+      bodyData = await request.json()
+    } catch (err) {
+      // Body might be empty
+    }
+
     const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
@@ -32,11 +39,13 @@ export async function POST(request) {
 
     // Generate Hosted Checkout Session
     const origin = request.headers.get('origin') || 'https://roofer-ledger.vercel.app'
+    const targetPriceId = bodyData.price_id || process.env.STRIPE_PRICE_ID || process.env.NEXT_PUBLIC_STRIPE_FOUNDERS_PRICE_ID
+    
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       line_items: [
         {
-          price: process.env.STRIPE_PRICE_ID, // They will provide this ID
+          price: targetPriceId,
           quantity: 1,
         },
       ],

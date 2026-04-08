@@ -1,7 +1,7 @@
 {
   "/login/page": "app/login/page.js",
-  "/invoice/new/page": "app/invoice/new/page.js",
-  "/dashboard/page": "app/dashboard/page.js",
-  "/dashboard/clients/new/page": "app/dashboard/clients/new/page.js",
-  "/dashboard/clients/page": "app/dashboard/clients/page.js"
+  "/onboarding/business/page": "app/onboarding/business/page.js",
+  "/onboarding/upgrade/page": "app/onboarding/upgrade/page.js",
+  "/onboarding/payments/page": "app/onboarding/payments/page.js",
+  "/dashboard/page": "app/dashboard/page.js"
 }

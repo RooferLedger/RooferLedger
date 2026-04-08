@@ -41,7 +41,7 @@ export default function LoginPage({ searchParams }) {
     }
     
     revalidatePath('/', 'layout')
-    redirect('/dashboard')
+    redirect('/onboarding/business')
   }
 
   return (
@@ -68,6 +68,7 @@ export default function LoginPage({ searchParams }) {
                 name="email"
                 type="email"
                 required
+                defaultValue={searchParams?.email || ''}
                 className="input-field"
                 placeholder="roofer@example.com"
               />

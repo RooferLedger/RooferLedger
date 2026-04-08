@@ -76,6 +76,10 @@ export async function POST(request) {
     // 6. Asynchronous Delivery Systems
     const deliveryPromises = []
     
+    // The payment link for the end client
+    // We will use a generic query string format for when the public payment portal is built
+    const paymentLink = `https://roofer-ledger.vercel.app/pay?invoice=${invoiceRecord.id}`
+    
     // A) Email via Resend
     if (clientData.email && process.env.RESEND_API_KEY) {
       const resend = new Resend(process.env.RESEND_API_KEY)
@@ -84,7 +88,16 @@ export async function POST(request) {
           from: 'billing@rooferledger.com',
           to: clientData.email,
           subject: `Invoice ${invoiceData.invoiceId} from ${invoiceData.companyName}`,
-          html: `<p>Hi ${clientData.first_name},</p><p>Please find your invoice attached for the recent roofing work.</p>`,
+          html: `
+            <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+              <h2 style="color: #333;">Hi ${clientData.first_name},</h2>
+              <p style="color: #555; font-size: 16px;">Please find your invoice attached for the recent roofing work totaling <strong>$${total.toFixed(2)}</strong>.</p>
+              <div style="margin: 30px 0;">
+                <a href="${paymentLink}" style="background-color: #238636; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 16px;">Pay Invoice Online</a>
+              </div>
+              <p style="color: #888; font-size: 14px;">Thank you for your business!</p>
+            </div>
+          `,
           attachments: [{ filename: `invoice-${invoiceData.invoiceId}.pdf`, content: pdfBuffer }]
         })
       )

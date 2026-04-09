@@ -1,5 +1,5 @@
-import { createClient } from '../../lib/supabase/server'
-import { redirect } from 'next/navigation'
+import { createClient as createServerClient } from '../../lib/supabase/server'
+import { createClient } from '@supabase/supabase-js'
 import PayButton from './PayButton'
 
 export default async function PublicInvoicePayment({ searchParams }) {
@@ -14,7 +14,11 @@ export default async function PublicInvoicePayment({ searchParams }) {
     )
   }
 
-  const supabase = createClient()
+  // Use Admin Service Role Key to bypass Row-Level Security for public invoice viewing
+  const adminKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+  const supabase = adminKey
+    ? createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, adminKey)
+    : createServerClient()
 
   // 1. Fetch the invoice
   const { data: invoice, error: invoiceError } = await supabase
@@ -22,6 +26,7 @@ export default async function PublicInvoicePayment({ searchParams }) {
     .select('*, line_items(*)')
     .eq('id', invoiceId)
     .single()
+
 
   if (invoiceError || !invoice) {
     return (

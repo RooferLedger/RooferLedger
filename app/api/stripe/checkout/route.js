@@ -62,6 +62,6 @@ export async function POST(request) {
 
   } catch (error) {
     console.error('Stripe Checkout API Error:', error)
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+    return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 })
   }
 }

@@ -27,7 +27,7 @@ export default function UpgradeSetup() {
       if (data.url) {
         window.location.href = data.url
       } else {
-        alert('Could not start checkout. Make sure your Founders Price ID is correct.')
+        alert(data.error ? "Stripe Checkout Error: " + data.error : 'Could not start checkout. Make sure your Founders Price ID is correct.')
         setLoading(false)
       }
     } catch (err) {

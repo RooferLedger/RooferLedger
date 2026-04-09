@@ -20,7 +20,7 @@ export default function SettingsClient({ initialOrg, initialUser }) {
       setTimeout(() => setSaved(false), 3000)
     } catch (err) {
       console.error(err)
-      alert("Failed to save.")
+      alert("Error: " + err.message)
     } finally {
       setSaving(false)
     }

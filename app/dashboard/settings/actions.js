@@ -41,7 +41,7 @@ export async function updateSettingsProfile(formData) {
     .eq('id', userData.organization_id)
 
   if (error) {
-    throw new Error('Failed to update organization')
+    throw new Error('DB Error: ' + error.message)
   }
 
   return { success: true }

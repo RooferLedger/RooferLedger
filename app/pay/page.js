@@ -33,6 +33,10 @@ export default async function PublicInvoicePayment({ searchParams }) {
       <div style={{ textAlign: 'center', padding: '4rem', color: '#fff' }}>
         <h2>Invoice Not Found</h2>
         <p style={{ color: '#8b949e' }}>This invoice may have been deleted or the link is incorrect.</p>
+        <div style={{ marginTop: '2rem', padding: '1rem', backgroundColor: 'rgba(218, 54, 51, 0.1)', color: 'var(--danger)', borderRadius: '8px', fontSize: '0.9rem', textAlign: 'left' }}>
+          <strong>Debug Error:</strong> {invoiceError ? JSON.stringify(invoiceError) : 'No invoice record returned.'}<br/>
+          <strong>Admin Key Present:</strong> {adminKey ? 'Yes' : 'No'}
+        </div>
       </div>
     )
   }

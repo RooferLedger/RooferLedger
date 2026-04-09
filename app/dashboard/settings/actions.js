@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from '../../../lib/supabase/server'
+import { createClient as createAdminClient } from '@supabase/supabase-js'
 
 export async function updateSettingsProfile(formData) {
   const companyName = formData.get('companyName')
@@ -30,7 +31,6 @@ export async function updateSettingsProfile(formData) {
   }
 
   const adminKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-  const { createClient: createAdminClient } = require('@supabase/supabase-js')
   const supabaseAdmin = adminKey 
     ? createAdminClient(process.env.NEXT_PUBLIC_SUPABASE_URL, adminKey)
     : supabase

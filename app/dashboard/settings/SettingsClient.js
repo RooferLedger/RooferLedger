@@ -33,7 +33,7 @@ export default function SettingsClient({ initialOrg, initialUser }) {
       <div className="input-grid" style={{ gridTemplateColumns: '1fr' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', borderBottom: '1px solid var(--border)', paddingBottom: '2rem', marginBottom: '2rem' }}>
           <label className="input-label" style={{ marginBottom: 0 }}>Company Logo</label>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
             <div style={{ width: '80px', height: '80px', borderRadius: '12px', border: '2px dashed var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.02)', overflow: 'hidden' }}>
               {initialOrg?.logo_url ? (
                 <img src={initialOrg.logo_url} alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -161,7 +161,7 @@ export default function SettingsClient({ initialOrg, initialUser }) {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(200px, 1fr) 3fr', gap: '2rem' }}>
+      <div className="settings-grid">
         {/* Settings Navigation */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
           <button 

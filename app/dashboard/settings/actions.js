@@ -11,7 +11,7 @@ export async function updateSettingsProfile(formData) {
   const { data: { user }, error: authError } = await supabase.auth.getUser()
 
   if (authError || !user) {
-    throw new Error('Unauthorized')
+    return { error: 'Unauthorized' }
   }
 
   // Find their organization ID via the users table
@@ -43,7 +43,7 @@ export async function updateSettingsProfile(formData) {
       await supabaseAdmin.from('users').update({ organization_id: newOrg.id }).eq('id', user.id)
       return { success: true }
     } else {
-      throw new Error('DB Error: Failed to auto-create missing organization.')
+      return { error: 'DB auto-heal failed: ' + orgCreateError?.message }
     }
   }
 
@@ -53,7 +53,7 @@ export async function updateSettingsProfile(formData) {
     .eq('id', userData.organization_id)
 
   if (error) {
-    throw new Error('DB Error: ' + error.message)
+    return { error: 'DB update error: ' + error.message }
   }
 
   return { success: true }

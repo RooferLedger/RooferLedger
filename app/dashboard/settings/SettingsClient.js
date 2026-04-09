@@ -15,7 +15,8 @@ export default function SettingsClient({ initialOrg, initialUser }) {
     setSaved(false)
     const formData = new FormData(e.target)
     try {
-      await updateSettingsProfile(formData)
+      const result = await updateSettingsProfile(formData)
+      if (result && result.error) throw new Error(result.error)
       setSaved(true)
       setTimeout(() => setSaved(false), 3000)
     } catch (err) {

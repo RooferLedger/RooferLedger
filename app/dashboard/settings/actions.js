@@ -28,7 +28,6 @@ export async function updateSettingsProfile(formData) {
 
   const updatePayload = {
     name: companyName,
-    phone: phone,
   }
 
   if (userError || !userData?.organization_id) {

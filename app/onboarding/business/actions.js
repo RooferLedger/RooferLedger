@@ -18,7 +18,6 @@ export async function updateOrganizationProfile(formData) {
 
   const updatePayload = {
     name: companyName,
-    phone: phone,
     ...(logoData ? { logo_url: logoData } : {})
   }
 

@@ -62,7 +62,10 @@ export default function InvoiceForm({ activeClients }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       })
-      if (!response.ok) throw new Error('Preview Generation Failed')
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}))
+        throw new Error(errData.error || 'Preview Generation Failed')
+      }
       
       const blob = await response.blob()
       const url = window.URL.createObjectURL(blob)
@@ -71,7 +74,7 @@ export default function InvoiceForm({ activeClients }) {
       setIsPreviewOpen(true)
     } catch (error) {
       console.error(error)
-      alert("Failed to layout preview.")
+      alert(error.message)
     } finally {
       setIsPreviewing(false)
     }
@@ -87,7 +90,10 @@ export default function InvoiceForm({ activeClients }) {
         body: JSON.stringify(data),
       })
       
-      if (!response.ok) throw new Error('Generation Failed')
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}))
+        throw new Error(errData.error || 'Generation Failed')
+      }
       
       const blob = await response.blob()
       const url = window.URL.createObjectURL(blob)
@@ -101,7 +107,7 @@ export default function InvoiceForm({ activeClients }) {
       alert("Invoice fully processed, logged in Database, and downloaded successfully!")
     } catch (error) {
       console.error(error)
-      alert("An error occurred during final sync.")
+      alert(error.message)
     } finally {
       setIsGenerating(false)
     }

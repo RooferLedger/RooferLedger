@@ -29,7 +29,13 @@ export async function updateSettingsProfile(formData) {
     phone: phone,
   }
 
-  const { error } = await supabase
+  const adminKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+  const { createClient: createAdminClient } = require('@supabase/supabase-js')
+  const supabaseAdmin = adminKey 
+    ? createAdminClient(process.env.NEXT_PUBLIC_SUPABASE_URL, adminKey)
+    : supabase
+
+  const { error } = await supabaseAdmin
     .from('organizations')
     .update(updatePayload)
     .eq('id', userData.organization_id)

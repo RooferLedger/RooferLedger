@@ -90,7 +90,7 @@ export async function POST(request) {
     
     // The payment link for the end client
     // We will use a generic query string format for when the public payment portal is built
-    const paymentLink = `https://roofer-ledger.vercel.app/pay?invoice=${invoiceRecord.id}`
+    const paymentLink = `https://rooferledger.com/pay?invoice=${invoiceRecord.id}`
     
     // A) Email via Resend
     if (clientData.email && process.env.RESEND_API_KEY) {

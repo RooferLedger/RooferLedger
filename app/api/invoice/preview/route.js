@@ -22,21 +22,37 @@ export async function POST(request) {
       }
     }
 
+    let clientEmail = null
+    let clientPhone = null
+    let clientName = data.clientName || 'Valued Client'
+    
+    // Fetch live client data for the preview if selected
+    if (data.clientId) {
+      const { data: clientData } = await supabase.from('clients').select('*').eq('id', data.clientId).single()
+      if (clientData) {
+        clientName = `${clientData.first_name} ${clientData.last_name}`
+        clientEmail = clientData.email
+        clientPhone = clientData.phone
+      }
+    }
+
     const subtotal = data.lineItems.reduce((acc, item) => acc + (parseFloat(item.quantity || 0) * parseFloat(item.unitPrice || 0)), 0)
     const taxRateStr = data.taxRate ? data.taxRate.toString() : '0'
     const tax = subtotal * (parseFloat(taxRateStr) / 100)
     const total = subtotal + tax
 
-    // We use dummy client names if none is selected
     const invoiceData = {
       invoiceId: `PREVIEW`,
       date: data.customDate || new Date().toLocaleDateString(),
-      clientName: data.clientName || 'Valued Client',
+      clientName,
+      clientEmail,
+      clientPhone,
       subtotal,
       tax,
       total,
       lineItems: data.lineItems,
       companyName: orgData?.name || 'Your Company',
+      companyEmail: user?.email,
       logoUrl: orgData?.logo_url,
       notes: data.notes
     }

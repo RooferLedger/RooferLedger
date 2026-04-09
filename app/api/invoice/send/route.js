@@ -45,11 +45,14 @@ export async function POST(request) {
       invoiceId: `INV-${Date.now().toString().slice(-4)}`,
       date: data.customDate || new Date().toLocaleDateString(),
       clientName: `${clientData.first_name} ${clientData.last_name}`,
+      clientEmail: clientData.email,
+      clientPhone: clientData.phone,
       subtotal,
       tax,
       total,
       lineItems: data.lineItems,
       companyName: orgData?.name || 'RooferLedger',
+      companyEmail: user.email,
       logoUrl: orgData?.logo_url,
       notes: data.notes
     }

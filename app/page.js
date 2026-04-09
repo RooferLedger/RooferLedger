@@ -25,6 +25,30 @@ export default function Home() {
         Beta Access: The first 50 Roofers skip the $49/mo subscription and lock in our $99/yr Lifetime Founders Rate.
       </div>
 
+      {/* Navigation Bar */}
+      <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.5rem 2rem', maxWidth: '1200px', margin: '0 auto' }}>
+        <div style={{ fontSize: '1.5rem', fontWeight: '900', color: '#fff', letterSpacing: '-0.5px' }}>
+          Roofer<span style={{ color: 'var(--primary)' }}>Ledger</span>
+        </div>
+        <button 
+          onClick={() => router.push('/login')}
+          style={{ 
+            backgroundColor: 'transparent', 
+            color: '#fff', 
+            border: '1px solid rgba(255,255,255,0.2)', 
+            padding: '0.5rem 1.25rem', 
+            borderRadius: '6px', 
+            fontWeight: '600', 
+            cursor: 'pointer',
+            transition: 'all 0.2s'
+          }}
+          onMouseOver={(e) => { e.currentTarget.style.borderColor = '#fff'; e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)' }}
+          onMouseOut={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)'; e.currentTarget.style.backgroundColor = 'transparent' }}
+        >
+          Sign In
+        </button>
+      </nav>
+
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '5rem 1.5rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem', alignItems: 'center' }}>
         
         {/* Left: Action-Oriented Hero Copy */}

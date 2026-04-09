@@ -15,7 +15,12 @@ export default function UpgradeSetup() {
       const res = await fetch('/api/stripe/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ price_id: foundersPriceId })
+        body: JSON.stringify({ 
+          price_id: foundersPriceId,
+          mode: 'subscription',
+          success_url: '/onboarding/white-glove',
+          cancel_url: '/onboarding/upgrade' 
+        })
       })
       
       const data = await res.json()
@@ -106,7 +111,7 @@ export default function UpgradeSetup() {
         </div>
       </div>
 
-      <div style={{ textAlign: 'center' }}>
+      <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }}>
         <button 
           onClick={handleSkip}
           style={{

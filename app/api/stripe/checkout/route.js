@@ -41,6 +41,10 @@ export async function POST(request) {
     const origin = request.headers.get('origin') || 'https://roofer-ledger.vercel.app'
     const targetPriceId = bodyData.price_id || process.env.STRIPE_PRICE_ID || process.env.NEXT_PUBLIC_STRIPE_FOUNDERS_PRICE_ID
     
+    const checkoutMode = bodyData.mode || 'subscription'
+    const successPath = bodyData.success_url || '/dashboard/settings?checkout=success'
+    const cancelPath = bodyData.cancel_url || '/dashboard/settings?checkout=canceled'
+
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       line_items: [
@@ -49,9 +53,9 @@ export async function POST(request) {
           quantity: 1,
         },
       ],
-      mode: 'subscription', // Change to 'payment' if one-time
-      success_url: `${origin}/dashboard/settings?checkout=success`,
-      cancel_url: `${origin}/dashboard/settings?checkout=canceled`,
+      mode: checkoutMode,
+      success_url: `${origin}${successPath}`,
+      cancel_url: `${origin}${cancelPath}`,
     })
 
     return NextResponse.json({ url: session.url })

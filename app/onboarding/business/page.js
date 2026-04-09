@@ -2,13 +2,32 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowRight, Building2, Phone } from 'lucide-react'
+import { ArrowRight, Building2, Phone, ImagePlus } from 'lucide-react'
 import { updateOrganizationProfile } from './actions'
 
 export default function BusinessSetup() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({ companyName: '', phone: '' })
+
+  const [logoBase64, setLogoBase64] = useState('')
+
+  const handleLogoUpload = (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+
+    // Limit to 2MB roughly before encoding to prevent payload too large errors
+    if (file.size > 2 * 1024 * 1024) {
+      alert("Logo must be less than 2MB")
+      return
+    }
+
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      setLogoBase64(reader.result)
+    }
+    reader.readAsDataURL(file)
+  }
 
   const clientAction = async (formData) => {
     setLoading(true)
@@ -28,6 +47,38 @@ export default function BusinessSetup() {
       </div>
 
       <form action={clientAction} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+        <input type="hidden" name="logoData" value={logoBase64} />
+        
+        {/* Logo Upload */}
+        <div>
+          <label style={{ display: 'block', marginBottom: '0.5rem', color: '#c9d1d9', fontSize: '0.9rem' }}>Company Logo (Optional)</label>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1rem',
+            backgroundColor: '#0d1117',
+            border: '1px dashed var(--border)',
+            padding: '1rem',
+            borderRadius: '8px',
+          }}>
+            {logoBase64 ? (
+              <img src={logoBase64} alt="Logo Preview" style={{ width: '60px', height: '60px', objectFit: 'contain', borderRadius: '4px', backgroundColor: '#fff' }} />
+            ) : (
+              <div style={{ width: '60px', height: '60px', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: '4px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <ImagePlus size={24} color="#8b949e" />
+              </div>
+            )}
+            <div style={{ flex: 1 }}>
+              <input 
+                type="file" 
+                accept="image/*"
+                onChange={handleLogoUpload}
+                style={{ color: '#8b949e', fontSize: '0.9rem', width: '100%' }}
+              />
+            </div>
+          </div>
+        </div>
+
         <div>
           <label style={{ display: 'block', marginBottom: '0.5rem', color: '#c9d1d9', fontSize: '0.9rem' }}>Company Name</label>
           <div style={{ position: 'relative' }}>

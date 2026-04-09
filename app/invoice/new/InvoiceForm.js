@@ -156,7 +156,7 @@ export default function InvoiceForm({ activeClients }) {
           <h1 style={{ margin: '0 0 2rem 0', fontSize: '2.5rem', color: 'var(--primary)', fontWeight: '900' }}>INVOICE</h1>
           
           <form id="invoice-form">
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', marginBottom: '3rem' }}>
+            <div className="invoice-top-grid">
               <div>
                 <label className="input-label" style={{ color: 'var(--foreground)' }}>Bill To</label>
                 <select 
@@ -189,7 +189,7 @@ export default function InvoiceForm({ activeClients }) {
             </div>
 
             <div style={{ marginBottom: '2rem' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '3fr 1fr 1.5fr 1fr auto', gap: '1rem', paddingBottom: '0.5rem', borderBottom: '1px solid var(--border)', color: '#8b949e', fontWeight: '600', fontSize: '0.9rem' }}>
+              <div className="invoice-line-headers">
                 <div>Description</div>
                 <div>QTY</div>
                 <div>Unit Price</div>
@@ -203,8 +203,9 @@ export default function InvoiceForm({ activeClients }) {
                 const rowTotal = qty * price;
 
                 return (
-                  <div key={field.id} style={{ display: 'grid', gridTemplateColumns: '3fr 1fr 1.5fr 1fr auto', gap: '1rem', alignItems: 'center', marginTop: '1rem' }}>
+                  <div key={field.id} className="invoice-line-row">
                     <div>
+                      <span className="mobile-only-label" style={{ display: 'none', fontSize: '0.8rem', color: '#8b949e', marginBottom: '0.25rem' }}>Description</span>
                       <input 
                         {...register(`lineItems.${index}.description`)} 
                         className="input-field" 
@@ -213,6 +214,7 @@ export default function InvoiceForm({ activeClients }) {
                       />
                     </div>
                     <div>
+                      <span className="mobile-only-label" style={{ display: 'none', fontSize: '0.8rem', color: '#8b949e', marginBottom: '0.25rem' }}>QTY</span>
                       <input 
                         {...register(`lineItems.${index}.quantity`, { valueAsNumber: true })} 
                         type="number" 
@@ -222,6 +224,7 @@ export default function InvoiceForm({ activeClients }) {
                       />
                     </div>
                     <div>
+                      <span className="mobile-only-label" style={{ display: 'none', fontSize: '0.8rem', color: '#8b949e', marginBottom: '0.25rem' }}>Unit Price</span>
                       <div style={{ position: 'relative' }}>
                         <span style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: '#8b949e' }}>$</span>
                         <input 
@@ -234,6 +237,7 @@ export default function InvoiceForm({ activeClients }) {
                       </div>
                     </div>
                     <div style={{ textAlign: 'right', fontWeight: '500', color: 'var(--foreground)' }}>
+                      <span className="mobile-only-label" style={{ display: 'none', fontSize: '0.8rem', color: '#8b949e', marginRight: '0.5rem' }}>Amount:</span>
                       ${rowTotal.toFixed(2)}
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -261,7 +265,7 @@ export default function InvoiceForm({ activeClients }) {
             </button>
 
             {/* Notes & Totals Layout */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '3rem', borderTop: '1px solid var(--border)', paddingTop: '2rem', gap: '2rem' }}>
+            <div className="invoice-bottom-grid">
               
               {/* Custom Notes */}
               <div style={{ flex: 1, maxWidth: '400px' }}>

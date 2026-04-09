@@ -243,21 +243,132 @@ button { cursor: pointer; }
     flex-direction: column;
   }
   .sidebar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
     width: 100%;
     border-right: none;
-    border-bottom: 1px solid var(--border);
-    padding: 1rem;
+    border-bottom: none;
+    border-top: 1px solid var(--border);
+    padding: 0.5rem;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
+    background-color: var(--surface);
+    z-index: 50;
+  }
+  .sidebar-header {
+    display: none;
   }
   .sidebar-nav {
     flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
   }
   .sidebar-link {
     padding: 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .sidebar-link span {
     display: none;
   }
+  .sidebar > div:last-child {
+    margin-top: 0 !important;
+  }
+  .sidebar > div:last-child form button {
+    padding: 0.5rem;
+    display: flex;
+    justify-content: center;
+  }
+  .dashboard-content {
+    padding-bottom: 80px; 
+  }
 }
+
+/* Mobile Responsive Invoice Form Utilities */
+.invoice-top-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  margin-bottom: 3rem;
+}
+
+.invoice-line-headers {
+  display: grid; 
+  grid-template-columns: 3fr 1fr 1.5fr 1fr auto; 
+  gap: 1rem; 
+  padding-bottom: 0.5rem; 
+  border-bottom: 1px solid var(--border); 
+  color: #8b949e; 
+  font-weight: 600; 
+  font-size: 0.9rem;
+}
+
+.invoice-line-row {
+  display: grid; 
+  grid-template-columns: 3fr 1fr 1.5fr 1fr auto; 
+  gap: 1rem; 
+  align-items: center; 
+  margin-top: 1rem;
+}
+
+.invoice-bottom-grid {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  border-top: 1px solid var(--border);
+  padding-top: 2rem;
+  gap: 2rem;
+}
+
+@media (max-width: 768px) {
+  .invoice-top-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .invoice-top-grid > div:last-child {
+    text-align: left !important;
+    align-items: flex-start !important;
+  }
+  .invoice-top-grid > div:last-child input {
+    text-align: left !important;
+  }
+  
+  /* Hide standard headers on mobile and use card style rows */
+  .invoice-line-headers {
+    display: none;
+  }
+  .invoice-line-row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    padding: 1rem 1rem 3rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.02);
+    position: relative;
+    align-items: flex-start;
+  }
+  
+  /* Position the delete button to bottom right corner of the card */
+  .invoice-line-row > div:last-child {
+    position: absolute;
+    bottom: 0.75rem;
+    right: 1rem;
+  }
+
+  /* Make Notes and Totals stack */
+  .invoice-bottom-grid {
+    flex-direction: column;
+  }
+  .invoice-bottom-grid > div {
+    max-width: 100% !important;
+  }
+
+  .mobile-only-label {
+    display: block !important;
+  }
+}
+

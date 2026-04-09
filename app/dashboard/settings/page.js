@@ -1,165 +1,37 @@
-'use client'
+import { createClient } from '../../../lib/supabase/server'
+import { redirect } from 'next/navigation'
+import SettingsClient from './SettingsClient'
 
-import { Settings, Building, CreditCard, Bell, CheckCircle2 } from 'lucide-react'
-import { useState } from 'react'
+export const dynamic = 'force-dynamic'
 
-export default function SettingsPage() {
-  const [activeTab, setActiveTab] = useState('profile')
+export default async function SettingsPage() {
+  const supabase = createClient()
+  const { data: { user } } = await supabase.auth.getUser()
 
-  const renderProfile = () => (
-    <div className="form-card">
-      <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>Company Profile</h2>
-      
-      <div className="input-grid" style={{ gridTemplateColumns: '1fr' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', borderBottom: '1px solid var(--border)', paddingBottom: '2rem', marginBottom: '2rem' }}>
-          <label className="input-label" style={{ marginBottom: 0 }}>Company Logo</label>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-            <div style={{ width: '80px', height: '80px', borderRadius: '12px', border: '2px dashed var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.02)' }}>
-              <span style={{ fontSize: '0.8rem', color: '#8b949e' }}>No Logo</span>
-            </div>
-            <div>
-              <input type="file" id="logoUpload" style={{ display: 'none' }} accept="image/png, image/jpeg" />
-              <label htmlFor="logoUpload" className="btn btn-secondary" style={{ cursor: 'pointer', padding: '0.5rem 1rem', fontSize: '0.9rem' }}>
-                Choose Image (.png, .jpg)
-              </label>
-              <p style={{ fontSize: '0.8rem', color: '#8b949e', marginTop: '0.5rem', marginBottom: 0 }}>
-                Recommended size: 400x150px. Max 2MB.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <label className="input-label">Company Name</label>
-          <input className="input-field" defaultValue="Apex Roofing LLC" />
-        </div>
-        
-        <div>
-          <label className="input-label">Support Email</label>
-          <input className="input-field" defaultValue="billing@apexroofing.com" />
-        </div>
-
-        <div>
-          <label className="input-label">Business Address</label>
-          <input className="input-field" defaultValue="789 Industrial Pkwy, Suite 100" />
-        </div>
-      </div>
-
-      <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '2rem' }}>
-        <button className="btn btn-primary" style={{ width: 'auto' }}>Save Changes</button>
-      </div>
-    </div>
-  )
-
-  const handleSubscribe = async () => {
-    try {
-      const response = await fetch('/api/stripe/checkout', { method: 'POST' })
-      const data = await response.json()
-      if (data.url) {
-        window.location.href = data.url
-      } else {
-        alert("Failed to initiate checkout.")
-      }
-    } catch (e) {
-      console.error(e)
-      alert("Billing server error.")
-    }
+  if (!user) {
+    redirect('/login')
   }
 
-  const renderBilling = () => (
-    <div className="form-card">
-      <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>Subscription & Billing</h2>
+  // Enforce Onboarding Completion & get Organization ID
+  const { data: userData, error: userError } = await supabase
+    .from('users')
+    .select('organization_id')
+    .eq('id', user.id)
+    .single()
 
-      <div style={{ backgroundColor: 'rgba(47, 129, 247, 0.05)', border: '1px solid rgba(47, 129, 247, 0.2)', borderRadius: '12px', padding: '2rem', marginBottom: '2rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div>
-            <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: 'var(--foreground)' }}>RooferLedger Core <em>(Beta)</em></h3>
-            <p style={{ color: '#8b949e', margin: 0 }}>Unlock infinite invoice generation, Twilio SMS, and Resend capabilities.</p>
-          </div>
-          <button onClick={handleSubscribe} className="btn btn-primary" style={{ width: 'auto', padding: '0.75rem 2rem', fontSize: '1rem', fontWeight: 'bold' }}>
-            Subscribe Now
-          </button>
-        </div>
-      </div>
-    </div>
-  )
+  if (userError || !userData?.organization_id) {
+    console.error("Settings page user check failed:", userError)
+    redirect('/onboarding/business')
+  }
 
-  const renderNotifications = () => (
-    <div className="form-card">
-      <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>Notification Preferences</h2>
-      
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1.5rem', borderBottom: '1px solid var(--border)' }}>
-          <div>
-            <h4 style={{ margin: '0 0 0.5rem 0', color: 'var(--foreground)' }}>Invoice Viewed Alerts</h4>
-            <p style={{ margin: 0, color: '#8b949e', fontSize: '0.9rem' }}>Receive an email when a client opens your invoice PDF.</p>
-          </div>
-          <input type="checkbox" defaultChecked style={{ width: '20px', height: '20px', accentColor: 'var(--primary)' }} />
-        </div>
-
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '1.5rem', borderBottom: '1px solid var(--border)' }}>
-          <div>
-            <h4 style={{ margin: '0 0 0.5rem 0', color: 'var(--foreground)' }}>Payment Receipts</h4>
-            <p style={{ margin: 0, color: '#8b949e', fontSize: '0.9rem' }}>Automatically trigger an email receipt when an invoice is marked Paid.</p>
-          </div>
-          <input type="checkbox" defaultChecked style={{ width: '20px', height: '20px', accentColor: 'var(--primary)' }} />
-        </div>
-
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div>
-            <h4 style={{ margin: '0 0 0.5rem 0', color: 'var(--foreground)' }}>Marketing Campaigns</h4>
-            <p style={{ margin: 0, color: '#8b949e', fontSize: '0.9rem' }}>Receive tips and tricks from the RooferLedger team.</p>
-          </div>
-          <input type="checkbox" style={{ width: '20px', height: '20px', accentColor: 'var(--primary)' }} />
-        </div>
-      </div>
-      
-      <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '2rem' }}>
-        <button className="btn btn-primary" style={{ width: 'auto' }}>Save Preferences</button>
-      </div>
-    </div>
-  )
+  // Fetch true organization profile
+  const { data: orgData } = await supabase
+    .from('organizations')
+    .select('*')
+    .eq('id', userData.organization_id)
+    .single()
 
   return (
-    <div className="container">
-      <div className="dash-header">
-        <div className="dash-title-box">
-          <h1>Settings</h1>
-          <p>Manage your roofing company profile and billing.</p>
-        </div>
-      </div>
-
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(200px, 1fr) 3fr', gap: '2rem' }}>
-        {/* Settings Navigation */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-          <button 
-            onClick={() => setActiveTab('profile')}
-            style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '1rem', backgroundColor: activeTab === 'profile' ? 'var(--surface)' : 'transparent', border: '1px solid', borderColor: activeTab === 'profile' ? 'var(--primary)' : 'transparent', borderRadius: '8px', color: activeTab === 'profile' ? 'var(--foreground)' : '#8b949e', fontWeight: activeTab === 'profile' ? 'bold' : 'normal', textAlign: 'left', cursor: 'pointer' }}
-          >
-            <Building size={18} /> Company Profile
-          </button>
-          
-          <button 
-            onClick={() => setActiveTab('billing')}
-            style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '1rem', backgroundColor: activeTab === 'billing' ? 'var(--surface)' : 'transparent', border: '1px solid', borderColor: activeTab === 'billing' ? 'var(--primary)' : 'transparent', borderRadius: '8px', color: activeTab === 'billing' ? 'var(--foreground)' : '#8b949e', fontWeight: activeTab === 'billing' ? 'bold' : 'normal', textAlign: 'left', cursor: 'pointer' }}
-          >
-            <CreditCard size={18} /> Subscription & Billing
-          </button>
-          
-          <button 
-            onClick={() => setActiveTab('notifications')}
-            style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '1rem', backgroundColor: activeTab === 'notifications' ? 'var(--surface)' : 'transparent', border: '1px solid', borderColor: activeTab === 'notifications' ? 'var(--primary)' : 'transparent', borderRadius: '8px', color: activeTab === 'notifications' ? 'var(--foreground)' : '#8b949e', fontWeight: activeTab === 'notifications' ? 'bold' : 'normal', textAlign: 'left', cursor: 'pointer' }}
-          >
-            <Bell size={18} /> Notifications
-          </button>
-        </div>
-
-        {/* Dynamic Form Content */}
-        {activeTab === 'profile' && renderProfile()}
-        {activeTab === 'billing' && renderBilling()}
-        {activeTab === 'notifications' && renderNotifications()}
-
-      </div>
-    </div>
+    <SettingsClient initialOrg={orgData} initialUser={{ email: user.email }} />
   )
 }

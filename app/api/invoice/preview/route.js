@@ -1,3 +1,4 @@
+import { createClient } from '../../../../lib/supabase/server'
 import { NextResponse } from 'next/server'
 import { renderToStream } from '@react-pdf/renderer'
 import { InvoiceDocument } from '../../../../lib/pdf/InvoiceTemplate'
@@ -8,13 +9,25 @@ export const dynamic = 'force-dynamic'
 export async function POST(request) {
   try {
     const data = await request.json()
+    
+    const supabase = createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    
+    let orgData = null
+    if (user) {
+      const { data: userData } = await supabase.from('users').select('organization_id').eq('id', user.id).single()
+      if (userData?.organization_id) {
+        const { data: org } = await supabase.from('organizations').select('name, logo_url').eq('id', userData.organization_id).single()
+        orgData = org
+      }
+    }
 
     const subtotal = data.lineItems.reduce((acc, item) => acc + (parseFloat(item.quantity || 0) * parseFloat(item.unitPrice || 0)), 0)
     const taxRateStr = data.taxRate ? data.taxRate.toString() : '0'
     const tax = subtotal * (parseFloat(taxRateStr) / 100)
     const total = subtotal + tax
 
-    // We use dummy client names if none is selected because this is just a visual preview
+    // We use dummy client names if none is selected
     const invoiceData = {
       invoiceId: `PREVIEW`,
       date: data.customDate || new Date().toLocaleDateString(),
@@ -23,7 +36,8 @@ export async function POST(request) {
       tax,
       total,
       lineItems: data.lineItems,
-      companyName: 'Your Company',
+      companyName: orgData?.name || 'Your Company',
+      logoUrl: orgData?.logo_url,
       notes: data.notes
     }
 

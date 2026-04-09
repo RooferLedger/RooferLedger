@@ -34,11 +34,14 @@ export async function POST(req) {
         
         console.log(`Subscription for customer ${customerId} updated to: ${status}`)
         
-        // Phase 4 Logic (When Supabase DB is active):
-        // await supabase
-        //   .from('organizations')
-        //   .update({ subscription_status: status })
-        //   .eq('stripe_customer_id', customerId)
+        // Phase 4 Logic (Active Supabase DB Sync):
+        const { createClient } = require('../../../lib/supabase/server')
+        const supabase = createClient()
+
+        await supabase
+          .from('organizations')
+          .update({ subscription_status: status })
+          .eq('stripe_customer_id', customerId)
           
         break
       default:

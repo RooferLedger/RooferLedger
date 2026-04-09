@@ -69,6 +69,6 @@ export async function POST(request) {
 
   } catch (error) {
     console.error('Preview Delivery API Error:', error)
-    return NextResponse.json({ error: 'Failed to generate preview' }, { status: 500 })
+    return NextResponse.json({ error: 'Failed to generate preview: ' + error.message }, { status: 500 })
   }
 }

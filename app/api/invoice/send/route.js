@@ -144,6 +144,6 @@ export async function POST(request) {
 
   } catch (error) {
     console.error('Invoice Delivery API Error:', error)
-    return NextResponse.json({ error: 'Failed to generate, sync, or send invoice' }, { status: 500 })
+    return NextResponse.json({ error: 'Failed to generate, sync, or send invoice: ' + error.message }, { status: 500 })
   }
 }

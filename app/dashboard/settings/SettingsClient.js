@@ -114,9 +114,49 @@ export default function SettingsClient({ initialOrg, initialUser }) {
   const renderBilling = () => (
     <div className="form-card">
       <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>Subscription & Billing</h2>
+      
+      {/* Payment Processing Onboarding */}
+      <div style={{ backgroundColor: 'rgba(52, 211, 153, 0.05)', border: '1px solid rgba(52, 211, 153, 0.2)', borderRadius: '12px', padding: '2rem', marginBottom: '2rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+          <div>
+            <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: 'var(--foreground)' }}>Accept Credit Cards</h3>
+            <p style={{ color: '#8b949e', margin: 0, maxWidth: '400px' }}>
+              {initialOrg?.stripe_account_id 
+                ? 'Your Stripe account is successfully linked. You can accept payments on invoices.' 
+                : 'Link your bank account via Stripe Connect to allow homeowners to pay your invoices online instantly.'}
+            </p>
+          </div>
+          {!initialOrg?.stripe_account_id && (
+            <button 
+              onClick={async (e) => {
+                e.target.disabled = true;
+                e.target.innerText = 'Connecting...';
+                try {
+                  const res = await fetch('/api/stripe/connect', { method: 'POST' });
+                  const data = await res.json();
+                  if (data.url) window.location.href = data.url;
+                  else alert("Error connecting to Stripe.");
+                } catch(err) {
+                  alert("Gateway error.");
+                }
+              }} 
+              className="btn btn-primary" 
+              style={{ width: 'auto', padding: '0.75rem 2rem', fontSize: '1rem', fontWeight: 'bold', backgroundColor: '#3fb950', color: '#fff' }}
+            >
+              Connect Bank Account
+            </button>
+          )}
+          {initialOrg?.stripe_account_id && (
+             <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--success)', fontWeight: 'bold', padding: '0.75rem 1rem', backgroundColor: 'rgba(52, 211, 153, 0.1)', borderRadius: '8px' }}>
+               <CheckCircle2 size={18} /> Stripe Connected
+             </span>
+          )}
+        </div>
+      </div>
 
+      {/* Subscription */}
       <div style={{ backgroundColor: 'rgba(47, 129, 247, 0.05)', border: '1px solid rgba(47, 129, 247, 0.2)', borderRadius: '12px', padding: '2rem', marginBottom: '2rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
             <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: 'var(--foreground)' }}>RooferLedger Core <em>(Beta)</em></h3>
             <p style={{ color: '#8b949e', margin: 0 }}>Unlock infinite invoice generation, Twilio SMS, and Resend capabilities.</p>

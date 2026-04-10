@@ -22,8 +22,10 @@ export default function Home() {
     <main style={{ minHeight: '100vh', backgroundColor: '#0d1117', color: '#fff', overflowX: 'hidden' }}>
       {/* Top Banner */}
       <div style={{ backgroundColor: 'rgba(47, 129, 247, 0.1)', borderBottom: '1px solid rgba(47, 129, 247, 0.2)', padding: '0.75rem', textAlign: 'center', color: 'var(--primary)', fontSize: '0.9rem', fontWeight: 'bold' }}>
-        <Zap size={14} style={{ display: 'inline', verticalAlign: 'text-bottom', marginRight: '4px' }} />
-        Beta Access: The first 50 Roofers skip the $49/mo subscription and lock in our $99/yr Lifetime Founders Rate.
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+          <Zap size={14} style={{ color: '#fbbf24' }} />
+          <span><strong style={{ color: '#fff' }}>BETA ACCESS:</strong> Only <span style={{ backgroundColor: '#da3633', color: '#fff', padding: '2px 8px', borderRadius: '12px', fontSize: '0.8rem', animation: 'pulse 2s infinite' }}>14 of 50</span> Founders Spots Remaining. Lock in your $99/yr Lifetime Rate.</span>
+        </div>
       </div>
 
       {/* Navigation Bar */}

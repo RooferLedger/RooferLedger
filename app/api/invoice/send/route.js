@@ -132,8 +132,9 @@ export async function POST(request) {
       )
     }
 
-    // Dispatch independently, do not fail invoice generation if delivery fails (e.g. invalid phone)
-    Promise.allSettled(deliveryPromises).then(results => console.log('Delivery Results:', results))
+    // Dispatch and explicitly AWAIT so Vercel does not freeze the microVM before network packets depart
+    const deliveryResults = await Promise.allSettled(deliveryPromises)
+    console.log('Delivery Results:', deliveryResults)
 
     // 7. Return PDF Buffer directly to Browser for immediate local download
     const headers = new Headers()

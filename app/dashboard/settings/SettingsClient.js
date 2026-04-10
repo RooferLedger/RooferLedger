@@ -135,9 +135,15 @@ export default function SettingsClient({ initialOrg, initialUser }) {
                   const res = await fetch('/api/stripe/connect', { method: 'POST' });
                   const data = await res.json();
                   if (data.url) window.location.href = data.url;
-                  else alert("Error connecting to Stripe.");
+                  else {
+                    e.target.innerText = 'Connect Bank Account';
+                    e.target.disabled = false;
+                    alert("Stripe Integration Error: " + (data.error || JSON.stringify(data)));
+                  }
                 } catch(err) {
-                  alert("Gateway error.");
+                  e.target.innerText = 'Connect Bank Account';
+                  e.target.disabled = false;
+                  alert("Gateway error: " + err.message);
                 }
               }} 
               className="btn btn-primary" 

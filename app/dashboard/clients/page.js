@@ -55,20 +55,7 @@ export default async function ClientsPage() {
               <Link 
                 href={`/dashboard/clients/${client.id}`} 
                 key={client.id}
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'minmax(0, 1.5fr) minmax(0, 1.5fr) minmax(0, 2fr) auto',
-                  alignItems: 'center',
-                  gap: '1.5rem',
-                  padding: '1.5rem',
-                  backgroundColor: 'var(--card-bg)',
-                  border: '1px solid var(--card-border)',
-                  borderRadius: '12px',
-                  textDecoration: 'none',
-                  transition: 'all 0.2s ease',
-                  cursor: 'pointer'
-                }}
-                className="client-row-card"
+                className="client-list-row"
               >
                 {/* Name & Avatar */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', overflow: 'hidden' }}>

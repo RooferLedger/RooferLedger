@@ -150,6 +150,55 @@ button { cursor: pointer; }
   }
 }
 
+.client-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 2rem;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .client-detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.client-header-card {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+@media (max-width: 600px) {
+  .client-header-card {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.client-list-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.5fr) minmax(0, 2fr) auto;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+@media (max-width: 768px) {
+  .client-list-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .client-list-row > div:last-child {
+    justify-self: start;
+    width: 100%;
+    text-align: center;
+  }
+}
+
 .form-card {
   background-color: var(--surface); padding: 2rem; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }

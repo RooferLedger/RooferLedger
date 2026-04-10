@@ -42,12 +42,12 @@ export default async function ClientViewPage({ params }) {
         </Link>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: '2rem', alignItems: 'start' }}>
+      <div className="client-detail-grid">
         
         {/* Main Details Panel */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
           
-          <div className="form-card" style={{ display: 'flex', gap: '1.5rem', alignItems: 'center', padding: '2rem' }}>
+          <div className="form-card client-header-card" style={{ padding: '2rem' }}>
             <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--primary) 0%, #3a82f6 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '2rem', fontWeight: 'bold' }}>
               {initials}
             </div>

@@ -196,6 +196,51 @@ export default function Home() {
         </div>
       </div>
       
+      {/* Testimonials */}
+      <div style={{ backgroundColor: 'var(--surface)', borderTop: '1px solid var(--border)', padding: '6rem 1.5rem' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+            <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', color: '#fff', marginBottom: '1rem', fontWeight: '900', letterSpacing: '-0.02em' }}>Used by top roofing professionals.</h2>
+            <p style={{ color: '#a1a1aa', fontSize: '1.15rem', maxWidth: '650px', margin: '0 auto' }}>Don't just take our word for it. Here's what owners are saying.</p>
+          </div>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+            {[
+              {
+                name: "Marcus T.",
+                role: "Owner, Summit Roofs",
+                quote: "I used to spend my entire Sunday morning doing invoicing in QuickBooks. Now I literally send the invoice from my truck before I even pull out of the client's driveway. Game changer."
+              },
+              {
+                name: "David R.",
+                role: "Operator, Prime Exteriors",
+                quote: "The ability to just text the invoice straight to the homeowner is huge. They tap the link and pay with their credit card instantly. We've cut our accounts receivable time down by 80%."
+              },
+              {
+                name: "Sarah L.",
+                role: "Admin, Elevate Contractors",
+                quote: "Everything else we tried was just too complicated. RooferLedger is so simple that our newest guys in the field were generating professional estimates and invoices on day one without any training."
+              }
+            ].map((t, i) => (
+              <div key={i} style={{ backgroundColor: '#0d1117', padding: '2rem', borderRadius: '16px', border: '1px solid var(--border)', position: 'relative' }}>
+                <div style={{ display: 'flex', gap: '2px', color: '#fbbf24', marginBottom: '1rem' }}>
+                  <Star size={16} fill="currentColor" />
+                  <Star size={16} fill="currentColor" />
+                  <Star size={16} fill="currentColor" />
+                  <Star size={16} fill="currentColor" />
+                  <Star size={16} fill="currentColor" />
+                </div>
+                <p style={{ fontSize: '1.05rem', color: '#e6edf3', lineHeight: 1.6, marginBottom: '2rem', fontStyle: 'italic' }}>"{t.quote}"</p>
+                <div>
+                  <h4 style={{ margin: '0 0 0.25rem 0', color: '#fff', fontWeight: 'bold' }}>{t.name}</h4>
+                  <span style={{ color: '#8b949e', fontSize: '0.9rem' }}>{t.role}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      
       {/* Final CTA Footer */}
       <div style={{ backgroundColor: 'rgba(47, 129, 247, 0.05)', borderTop: '1px solid var(--border)', padding: '6rem 1.5rem', textAlign: 'center' }}>
         <h2 style={{ fontSize: '2.5rem', fontWeight: '900', marginBottom: '1rem', color: '#fff' }}>Ready to modernize your business?</h2>

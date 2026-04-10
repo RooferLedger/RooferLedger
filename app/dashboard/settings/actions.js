@@ -6,6 +6,7 @@ import { createClient as createAdminClient } from '@supabase/supabase-js'
 export async function updateSettingsProfile(formData) {
   const companyName = formData.get('companyName')
   const phone = formData.get('phone')
+  const address = formData.get('address')
   
   const supabase = createClient()
   const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -28,6 +29,7 @@ export async function updateSettingsProfile(formData) {
 
   const updatePayload = {
     name: companyName,
+    address: address || null,
   }
 
   if (userError || !userData?.organization_id) {

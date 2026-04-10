@@ -69,6 +69,18 @@ export default function SettingsClient({ initialOrg, initialUser }) {
           <label className="input-label">Business Phone</label>
           <input name="phone" className="input-field" defaultValue={initialOrg?.phone || ''} />
         </div>
+
+        <div>
+          <label className="input-label">Company Address (Optional)</label>
+          <textarea 
+            name="address" 
+            className="input-field" 
+            defaultValue={initialOrg?.address || ''} 
+            placeholder="123 Roofing Way&#10;Dallas, TX 75201"
+            rows={3} 
+            style={{ resize: 'vertical', fontFamily: 'inherit' }} 
+          />
+        </div>
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '2rem', alignItems: 'center', gap: '1rem' }}>

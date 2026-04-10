@@ -7,6 +7,7 @@ import { redirect } from 'next/navigation'
 export async function updateOrganizationProfile(formData) {
   const companyName = formData.get('companyName')
   const phone = formData.get('phone')
+  const address = formData.get('address')
   const logoData = formData.get('logoData')
 
   const supabase = createServerClient()
@@ -18,6 +19,7 @@ export async function updateOrganizationProfile(formData) {
 
   const updatePayload = {
     name: companyName,
+    address: address || null,
     ...(logoData ? { logo_url: logoData } : {})
   }
 

@@ -17,7 +17,7 @@ export async function POST(request) {
     if (user) {
       const { data: userData } = await supabase.from('users').select('organization_id').eq('id', user.id).single()
       if (userData?.organization_id) {
-        const { data: org } = await supabase.from('organizations').select('name, logo_url').eq('id', userData.organization_id).single()
+        const { data: org } = await supabase.from('organizations').select('name, logo_url, address').eq('id', userData.organization_id).single()
         orgData = org
       }
     }
@@ -53,6 +53,7 @@ export async function POST(request) {
       lineItems: data.lineItems,
       companyName: orgData?.name || 'Your Company',
       companyEmail: user?.email,
+      companyAddress: orgData?.address,
       logoUrl: orgData?.logo_url,
       notes: data.notes
     }

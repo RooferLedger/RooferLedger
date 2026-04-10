@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowRight, Building2, Phone, ImagePlus } from 'lucide-react'
+import { ArrowRight, Building2, Phone, ImagePlus, MapPin } from 'lucide-react'
 import { updateOrganizationProfile } from './actions'
 
 export default function BusinessSetup() {
@@ -128,6 +128,35 @@ export default function BusinessSetup() {
                 fontSize: '1rem',
                 outline: 'none',
                 transition: 'border-color 0.2s'
+              }}
+              onFocus={(e) => e.target.style.borderColor = 'var(--primary)'}
+              onBlur={(e) => e.target.style.borderColor = 'var(--border)'}
+            />
+          </div>
+        </div>
+
+        <div>
+          <label style={{ display: 'block', marginBottom: '0.5rem', color: '#c9d1d9', fontSize: '0.9rem' }}>Company Address (Optional)</label>
+          <div style={{ position: 'relative' }}>
+            <MapPin size={18} color="#8b949e" style={{ position: 'absolute', left: '1rem', top: '1rem' }} />
+            <textarea 
+              name="address"
+              placeholder="123 Roofing Way&#10;Dallas, TX 75201"
+              value={formData.address || ''}
+              onChange={(e) => setFormData({...formData, address: e.target.value})}
+              rows={3}
+              style={{
+                width: '100%',
+                backgroundColor: '#0d1117',
+                border: '1px solid var(--border)',
+                color: '#fff',
+                padding: '0.8rem 1rem 0.8rem 2.8rem',
+                borderRadius: '8px',
+                fontSize: '1rem',
+                outline: 'none',
+                resize: 'vertical',
+                transition: 'border-color 0.2s',
+                fontFamily: 'inherit'
               }}
               onFocus={(e) => e.target.style.borderColor = 'var(--primary)'}
               onBlur={(e) => e.target.style.borderColor = 'var(--border)'}

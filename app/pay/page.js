@@ -41,15 +41,22 @@ export default async function PublicInvoicePayment({ searchParams }) {
     )
   }
 
-  // 2. Fetch the Roofer's Organization
-  const { data: organization } = await supabase
+  const { data: organization, error: orgError } = await supabase
     .from('organizations')
     .select('name, stripe_account_id')
     .eq('id', invoice.organization_id)
     .single()
 
   if (!organization) {
-    return <div style={{ color: '#fff', textAlign: 'center', padding: '2rem' }}>System Error: Merchant not found.</div>
+    return (
+      <div style={{ color: '#fff', textAlign: 'center', padding: '2rem' }}>
+        <h2>System Error: Merchant not found.</h2>
+        <div style={{ backgroundColor: 'rgba(218, 54, 51, 0.1)', color: 'var(--danger)', padding: '1rem', marginTop: '1rem', borderRadius: '8px', textAlign: 'left' }}>
+          <strong>Org ID Searched:</strong> {invoice.organization_id || 'NULL'}<br/>
+          <strong>Supabase Error:</strong> {orgError ? JSON.stringify(orgError) : 'No Organization record returned.'}<br/>
+        </div>
+      </div>
+    )
   }
 
   const isPaid = invoice.status === 'paid'

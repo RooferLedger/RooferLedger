@@ -242,13 +242,23 @@ export default function Home() {
       </div>
       
       {/* Final CTA Footer */}
-      <div style={{ backgroundColor: 'rgba(47, 129, 247, 0.05)', borderTop: '1px solid var(--border)', padding: '6rem 1.5rem', textAlign: 'center' }}>
+      <div style={{ backgroundColor: 'rgba(47, 129, 247, 0.05)', borderTop: '1px solid var(--border)', padding: '6rem 1.5rem 8rem 1.5rem', textAlign: 'center' }}>
         <h2 style={{ fontSize: '2.5rem', fontWeight: '900', marginBottom: '1rem', color: '#fff' }}>Ready to modernize your business?</h2>
         <p style={{ color: '#a1a1aa', fontSize: '1.1rem', marginBottom: '2.5rem', maxWidth: '500px', margin: '0 auto 2.5rem auto' }}>Join the exclusive beta today and lock in our $99/yr lifetime founders rate before it jumps to $49/month.</p>
         <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="btn btn-primary" style={{ padding: '1.25rem 3rem', fontSize: '1.1rem', fontWeight: 'bold', width: 'auto', margin: '0 auto' }}>
           Create Your Free Account
         </button>
       </div>
+
+      {/* Legal Footer */}
+      <footer style={{ borderTop: '1px solid var(--border)', padding: '2rem 1.5rem', textAlign: 'center', backgroundColor: '#0d1117' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
+          <Link href="/terms" style={{ color: '#8b949e', fontSize: '0.9rem', textDecoration: 'none' }}>Terms of Service</Link>
+          <Link href="/privacy" style={{ color: '#8b949e', fontSize: '0.9rem', textDecoration: 'none' }}>Privacy Policy</Link>
+          <a href="mailto:support@rooferledger.com" style={{ color: '#8b949e', fontSize: '0.9rem', textDecoration: 'none' }}>Contact Support</a>
+        </div>
+        <p style={{ color: '#8b949e', fontSize: '0.8rem', margin: 0, opacity: 0.7 }}>&copy; {new Date().getFullYear()} RooferLedger. All rights reserved.</p>
+      </footer>
 
     </main>
   )

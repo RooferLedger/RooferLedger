@@ -1,22 +1,43 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowRight, Building2, Phone, ImagePlus, MapPin } from 'lucide-react'
+import { ArrowRight, Building2, Phone, ImagePlus, MapPin, ChevronDown, ChevronUp } from 'lucide-react'
 import { updateOrganizationProfile } from './actions'
+import { createClient } from '../../../lib/supabase/client'
 
 export default function BusinessSetup() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const [formData, setFormData] = useState({ companyName: '', phone: '' })
-
+  const [formData, setFormData] = useState({ companyName: '', phone: '', address: '' })
   const [logoBase64, setLogoBase64] = useState('')
+  const [showOptional, setShowOptional] = useState(false)
+
+  const supabase = createClient()
+
+  useEffect(() => {
+    const fetchUserAndPrefill = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user && user.email) {
+        const domain = user.email.split('@')[1]
+        if (domain) {
+          const name = domain.split('.')[0]
+          const genericDomains = ['gmail', 'yahoo', 'hotmail', 'outlook', 'icloud', 'me', 'aol', 'mail']
+          if (!genericDomains.includes(name.toLowerCase())) {
+            // Capitalize first letter and append "Roofing" logic if we want, or just the name
+            const parsedName = name.charAt(0).toUpperCase() + name.slice(1)
+            setFormData(prev => ({ ...prev, companyName: parsedName }))
+          }
+        }
+      }
+    }
+    fetchUserAndPrefill()
+  }, [])
 
   const handleLogoUpload = (e) => {
     const file = e.target.files[0]
     if (!file) return
 
-    // Limit to 2MB roughly before encoding to prevent payload too large errors
     if (file.size > 2 * 1024 * 1024) {
       alert("Logo must be less than 2MB")
       return
@@ -25,14 +46,15 @@ export default function BusinessSetup() {
     const reader = new FileReader()
     reader.onloadend = () => {
       setLogoBase64(reader.result)
+      setShowOptional(true) // Auto-expand if they upload
     }
     reader.readAsDataURL(file)
   }
 
-  const clientAction = async (formData) => {
+  const clientAction = async (formDataEvent) => {
     setLoading(true)
     try {
-      await updateOrganizationProfile(formData)
+      await updateOrganizationProfile(formDataEvent)
     } catch (err) {
       console.error(err)
       setLoading(false)
@@ -42,62 +64,33 @@ export default function BusinessSetup() {
   return (
     <div>
       <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-        <h2 style={{ fontSize: '1.5rem', color: '#fff', margin: '0 0 0.5rem 0' }}>Tell us about your business</h2>
-        <p style={{ color: '#a1a1aa', fontSize: '0.95rem', margin: 0 }}>This is what your clients will see on their invoices.</p>
+        <h2 style={{ fontSize: '1.75rem', color: '#fff', margin: '0 0 0.5rem 0', fontWeight: '900' }}>Welcome aboard!</h2>
+        <p style={{ color: '#a1a1aa', fontSize: '1rem', margin: 0 }}>What name do you want on your invoices?</p>
       </div>
 
       <form action={clientAction} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
         <input type="hidden" name="logoData" value={logoBase64} />
         
-        {/* Logo Upload */}
+        {/* Core Field - Always Visible */}
         <div>
-          <label style={{ display: 'block', marginBottom: '0.5rem', color: '#c9d1d9', fontSize: '0.9rem' }}>Company Logo (Optional)</label>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '1rem',
-            backgroundColor: '#0d1117',
-            border: '1px dashed var(--border)',
-            padding: '1rem',
-            borderRadius: '8px',
-          }}>
-            {logoBase64 ? (
-              <img src={logoBase64} alt="Logo Preview" style={{ width: '60px', height: '60px', objectFit: 'contain', borderRadius: '4px', backgroundColor: '#fff' }} />
-            ) : (
-              <div style={{ width: '60px', height: '60px', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: '4px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <ImagePlus size={24} color="#8b949e" />
-              </div>
-            )}
-            <div style={{ flex: 1 }}>
-              <input 
-                type="file" 
-                accept="image/*"
-                onChange={handleLogoUpload}
-                style={{ color: '#8b949e', fontSize: '0.9rem', width: '100%' }}
-              />
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <label style={{ display: 'block', marginBottom: '0.5rem', color: '#c9d1d9', fontSize: '0.9rem' }}>Company Name</label>
+          <label style={{ display: 'block', marginBottom: '0.5rem', color: '#c9d1d9', fontSize: '0.9rem', fontWeight: 'bold' }}>Company Name</label>
           <div style={{ position: 'relative' }}>
             <Building2 size={18} color="#8b949e" style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)' }} />
             <input 
               type="text" 
               name="companyName"
               required
-              placeholder="e.g. Apex Roofing & Exteriors"
+              placeholder="e.g. Apex Roofing"
               value={formData.companyName}
               onChange={(e) => setFormData({...formData, companyName: e.target.value})}
               style={{
                 width: '100%',
                 backgroundColor: '#0d1117',
-                border: '1px solid var(--border)',
+                border: '2px solid var(--border)',
                 color: '#fff',
-                padding: '0.8rem 1rem 0.8rem 2.8rem',
+                padding: '1rem 1rem 1rem 3rem',
                 borderRadius: '8px',
-                fontSize: '1rem',
+                fontSize: '1.1rem',
                 outline: 'none',
                 transition: 'border-color 0.2s'
               }}
@@ -107,85 +100,91 @@ export default function BusinessSetup() {
           </div>
         </div>
 
-        <div>
-          <label style={{ display: 'block', marginBottom: '0.5rem', color: '#c9d1d9', fontSize: '0.9rem' }}>Business Phone</label>
-          <div style={{ position: 'relative' }}>
-            <Phone size={18} color="#8b949e" style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)' }} />
-            <input 
-              type="tel" 
-              name="phone"
-              required
-              placeholder="(555) 123-4567"
-              value={formData.phone}
-              onChange={(e) => setFormData({...formData, phone: e.target.value})}
-              style={{
-                width: '100%',
-                backgroundColor: '#0d1117',
-                border: '1px solid var(--border)',
-                color: '#fff',
-                padding: '0.8rem 1rem 0.8rem 2.8rem',
-                borderRadius: '8px',
-                fontSize: '1rem',
-                outline: 'none',
-                transition: 'border-color 0.2s'
-              }}
-              onFocus={(e) => e.target.style.borderColor = 'var(--primary)'}
-              onBlur={(e) => e.target.style.borderColor = 'var(--border)'}
-            />
-          </div>
-        </div>
+        {/* Optional Toggle */}
+        <button 
+          type="button" 
+          onClick={() => setShowOptional(!showOptional)}
+          style={{ background: 'none', border: 'none', color: '#8b949e', display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', padding: '0.5rem 0', alignSelf: 'flex-start', fontSize: '0.9rem' }}
+        >
+          {showOptional ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+          {showOptional ? 'Hide Optional Settings' : 'Add Logo & Details (Optional)'}
+        </button>
 
-        <div>
-          <label style={{ display: 'block', marginBottom: '0.5rem', color: '#c9d1d9', fontSize: '0.9rem' }}>Company Address (Optional)</label>
-          <div style={{ position: 'relative' }}>
-            <MapPin size={18} color="#8b949e" style={{ position: 'absolute', left: '1rem', top: '1rem' }} />
-            <textarea 
-              name="address"
-              placeholder="123 Roofing Way&#10;Dallas, TX 75201"
-              value={formData.address || ''}
-              onChange={(e) => setFormData({...formData, address: e.target.value})}
-              rows={3}
-              style={{
-                width: '100%',
-                backgroundColor: '#0d1117',
-                border: '1px solid var(--border)',
-                color: '#fff',
-                padding: '0.8rem 1rem 0.8rem 2.8rem',
-                borderRadius: '8px',
-                fontSize: '1rem',
-                outline: 'none',
-                resize: 'vertical',
-                transition: 'border-color 0.2s',
-                fontFamily: 'inherit'
-              }}
-              onFocus={(e) => e.target.style.borderColor = 'var(--primary)'}
-              onBlur={(e) => e.target.style.borderColor = 'var(--border)'}
-            />
+        {/* Hidden Complexity */}
+        {showOptional && (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', padding: '1.5rem', backgroundColor: 'rgba(255,255,255,0.02)', borderRadius: '12px', border: '1px solid var(--border)' }}>
+            
+            <div>
+              <label style={{ display: 'block', marginBottom: '0.5rem', color: '#c9d1d9', fontSize: '0.9rem' }}>Company Logo</label>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', backgroundColor: '#0d1117', border: '1px dashed var(--border)', padding: '1rem', borderRadius: '8px' }}>
+                {logoBase64 ? (
+                  <img src={logoBase64} alt="Logo Preview" style={{ width: '60px', height: '60px', objectFit: 'contain', borderRadius: '4px', backgroundColor: '#fff' }} />
+                ) : (
+                  <div style={{ width: '60px', height: '60px', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: '4px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <ImagePlus size={24} color="#8b949e" />
+                  </div>
+                )}
+                <div style={{ flex: 1 }}>
+                  <input type="file" accept="image/*" onChange={handleLogoUpload} style={{ color: '#8b949e', fontSize: '0.9rem', width: '100%' }} />
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label style={{ display: 'block', marginBottom: '0.5rem', color: '#c9d1d9', fontSize: '0.9rem' }}>Business Phone</label>
+              <div style={{ position: 'relative' }}>
+                <Phone size={18} color="#8b949e" style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)' }} />
+                <input 
+                  type="tel" 
+                  name="phone"
+                  placeholder="(555) 123-4567"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                  style={{ width: '100%', backgroundColor: '#0d1117', border: '1px solid var(--border)', color: '#fff', padding: '0.8rem 1rem 0.8rem 2.8rem', borderRadius: '8px', fontSize: '1rem', outline: 'none' }}
+                />
+              </div>
+            </div>
+
+            <div>
+              <label style={{ display: 'block', marginBottom: '0.5rem', color: '#c9d1d9', fontSize: '0.9rem' }}>Company Address</label>
+              <div style={{ position: 'relative' }}>
+                <MapPin size={18} color="#8b949e" style={{ position: 'absolute', left: '1rem', top: '1rem' }} />
+                <textarea 
+                  name="address"
+                  placeholder="123 Roofing Way&#10;Dallas, TX 75201"
+                  value={formData.address}
+                  onChange={(e) => setFormData({...formData, address: e.target.value})}
+                  rows={3}
+                  style={{ width: '100%', backgroundColor: '#0d1117', border: '1px solid var(--border)', color: '#fff', padding: '0.8rem 1rem 0.8rem 2.8rem', borderRadius: '8px', fontSize: '1rem', resize: 'vertical', outline: 'none', fontFamily: 'inherit' }}
+                />
+              </div>
+            </div>
           </div>
-        </div>
+        )}
 
         <button 
           type="submit" 
           disabled={loading || !formData.companyName}
           style={{
-            marginTop: '1rem',
+            marginTop: '1.5rem',
             backgroundColor: 'var(--primary)',
             color: '#000',
             border: 'none',
-            padding: '1rem',
+            padding: '1.2rem',
             borderRadius: '8px',
-            fontSize: '1rem',
-            fontWeight: '600',
+            fontSize: '1.1rem',
+            fontWeight: 'bold',
             cursor: loading || !formData.companyName ? 'not-allowed' : 'pointer',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
             gap: '0.5rem',
-            opacity: loading || !formData.companyName ? 0.7 : 1,
-            transition: 'all 0.2s'
+            opacity: loading || !formData.companyName ? 0.5 : 1,
+            transition: 'all 0.2s',
+            boxShadow: '0 4px 15px rgba(47, 129, 247, 0.4)'
           }}
         >
-          {loading ? 'Saving...' : 'Continue'} <ArrowRight size={18} />
+          {loading ? 'Processing...' : 'Save & Continue'} <ArrowRight size={20} />
         </button>
       </form>
       

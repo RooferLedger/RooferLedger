@@ -1,17 +1,30 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowRight, CheckCircle2, Zap, Smartphone, DollarSign, FileText, Star } from 'lucide-react'
+import { createClient } from '../lib/supabase/client'
 
 export default function Home() {
   const [email, setEmail] = useState('')
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const router = useRouter()
+  const supabase = createClient()
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) setIsLoggedIn(true)
+    }
+    checkUser()
+  }, [])
 
   const handleStart = (e) => {
     e.preventDefault()
-    if (email) {
+    if (isLoggedIn) {
+      router.push('/dashboard')
+    } else if (email) {
       router.push(`/login?email=${encodeURIComponent(email)}`)
     } else {
       router.push('/login')
@@ -34,7 +47,7 @@ export default function Home() {
           Roofer<span style={{ color: 'var(--primary)' }}>Ledger</span>
         </div>
         <button 
-          onClick={() => router.push('/login')}
+          onClick={() => router.push(isLoggedIn ? '/dashboard' : '/login')}
           style={{ 
             backgroundColor: 'transparent', 
             color: '#fff', 
@@ -48,7 +61,7 @@ export default function Home() {
           onMouseOver={(e) => { e.currentTarget.style.borderColor = '#fff'; e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.05)' }}
           onMouseOut={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)'; e.currentTarget.style.backgroundColor = 'transparent' }}
         >
-          Sign In
+          {isLoggedIn ? 'Dashboard' : 'Sign In'}
         </button>
       </nav>
 

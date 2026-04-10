@@ -56,9 +56,13 @@ export default function Home() {
           <h1 style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: '900', lineHeight: 1.1, marginBottom: '1.25rem', letterSpacing: '-0.03em' }}>
             Get paid <span style={{ color: 'var(--primary)' }}>faster</span> before you leave the job site.
           </h1>
-          <p style={{ fontSize: '1.15rem', color: '#a1a1aa', marginBottom: '2.5rem', lineHeight: 1.6, maxWidth: '500px' }}>
+          <p style={{ fontSize: '1.15rem', color: '#a1a1aa', marginBottom: '1.5rem', lineHeight: 1.6, maxWidth: '500px' }}>
             Stop chasing checks and leaving cash on the roof. Generate professional, branded invoices from your truck in 30 seconds and accept secure credit card payments instantly.
           </p>
+
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', backgroundColor: 'rgba(46, 160, 67, 0.15)', color: '#3fb950', padding: '8px 16px', borderRadius: '8px', fontSize: '1rem', fontWeight: 'bold', marginBottom: '2.5rem', border: '1px solid rgba(46, 160, 67, 0.3)' }}>
+            <CheckCircle2 size={18} /> Your first 3 invoices are completely on us.
+          </div>
 
           <form onSubmit={handleStart} style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem', maxWidth: '450px' }}>
             <input 

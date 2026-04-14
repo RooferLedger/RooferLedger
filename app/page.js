@@ -43,9 +43,9 @@ export default function Home() {
 
       {/* Navigation Bar */}
       <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.5rem 2rem', maxWidth: '1200px', margin: '0 auto', flexWrap: 'wrap', gap: '1rem' }}>
-        <div style={{ fontSize: '1.5rem', fontWeight: '900', color: '#fff', letterSpacing: '-0.5px' }}>
+        <Link href="/" style={{ textDecoration: 'none', fontSize: '1.5rem', fontWeight: '900', color: '#fff', letterSpacing: '-0.5px' }}>
           Roofer<span style={{ color: 'var(--primary)' }}>Ledger</span>
-        </div>
+        </Link>
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
           <button 
             onClick={() => router.push(isLoggedIn ? '/dashboard' : '/login')}
@@ -212,7 +212,7 @@ export default function Home() {
 
              {/* Step 3 */}
              <div style={{ backgroundColor: 'var(--surface)', borderRadius: '24px', padding: '3rem 2rem', textAlign: 'center', position: 'relative', border: '1px solid var(--border)', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}>
-                <div style={{ position: 'absolute', top: '-20px', left: '50%', transform: 'translateX(-50%)', backgroundColor: '#161b22', color: 'var(--success)', width: '40px', height: '40px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '900', fontSize: '1.25rem', border: '2px solid var(--success)' }}>3</div>
+                <div style={{ position: 'absolute', top: '-20px', left: '50%', transform: 'translateX(-50%)', backgroundColor: '#161b22', color: 'var(--primary)', width: '40px', height: '40px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '900', fontSize: '1.25rem', border: '2px solid var(--border)' }}>3</div>
                 <DollarSign size={48} style={{ color: 'var(--success)', margin: '1rem auto 2rem auto' }} />
                 <h3 style={{ color: '#fff', fontSize: '1.5rem', marginBottom: '1rem' }}>Instant Funding</h3>
                 <p style={{ color: '#a1a1aa', lineHeight: 1.6, fontSize: '0.95rem' }}>The homeowner reviews the PDF and pays via credit card online. The funds land directly in your connected bank account.</p>

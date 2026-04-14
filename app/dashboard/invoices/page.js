@@ -1,12 +1,12 @@
 import { createClient } from '../../../lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { PlusCircle, FileText, CheckCircle2, Clock } from 'lucide-react'
+import { PlusCircle, FileText, CheckCircle2, Clock, X, Download } from 'lucide-react'
 import { updateInvoiceStatus } from './actions'
 
 export const dynamic = 'force-dynamic'
 
-export default async function InvoicesPage() {
+export default async function InvoicesPage({ searchParams }) {
   const supabase = createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return redirect('/')
@@ -28,8 +28,31 @@ export default async function InvoicesPage() {
     .eq('organization_id', userData.organization_id)
     .order('created_at', { ascending: false })
 
+  const previewId = searchParams?.preview
+
   return (
     <div className="container">
+      {/* Quick View Modal Overlay */}
+      {previewId && (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.8)', zIndex: 9999, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
+          <div style={{ width: '100%', maxWidth: '900px', backgroundColor: 'var(--surface)', borderRadius: '12px', overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '90vh' }}>
+            <div style={{ padding: '1rem 2rem', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#161b22', flexWrap: 'wrap', gap: '1rem' }}>
+              <h3 style={{ margin: 0, color: 'var(--foreground)' }}>Invoice Viewer</h3>
+              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                <a href={`/api/invoice/download?id=${previewId}`} download={`Invoice-${previewId.slice(0,8)}.pdf`} className="btn btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.85rem', width: 'auto', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <Download size={16} /> Save Document
+                </a>
+                <Link href={'/dashboard/invoices'} scroll={false} style={{ color: '#8b949e', display: 'flex', alignItems: 'center' }}>
+                  <X size={24} />
+                </Link>
+              </div>
+            </div>
+            <div style={{ flex: 1, backgroundColor: '#000' }}>
+              <iframe src={`/api/invoice/download?id=${previewId}`} style={{ width: '100%', height: '100%', border: 'none' }} title="PDF Preview" />
+            </div>
+          </div>
+        </div>
+      )}
       <div className="dash-header">
         <div>
           <h1>Invoice Ledger</h1>
@@ -64,7 +87,7 @@ export default async function InvoicesPage() {
                   <tr key={inv.id} style={{ borderBottom: '1px solid var(--border)' }}>
                     <td style={{ padding: '1rem' }}>
                       <div style={{ fontWeight: '500', color: 'var(--primary)' }}>
-                        <Link href={`/api/invoice/preview?invoiceId=${inv.id}`} target="_blank" style={{ textDecoration: 'underline' }}>
+                        <Link href={`?preview=${inv.id}`} scroll={false} style={{ textDecoration: 'underline' }}>
                           INV-{inv.id.slice(0, 8)}
                         </Link>
                       </div>

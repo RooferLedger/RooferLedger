@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { PlusCircle, TrendingUp, Users, DollarSign, Clock, FileText } from 'lucide-react'
+import { updateInvoiceStatus } from './invoices/actions'
 
 import { createClient } from '../../lib/supabase/server'
 import { redirect } from 'next/navigation'
@@ -110,6 +111,7 @@ export default async function Dashboard() {
                 <th style={{ padding: '1rem', color: '#8b949e', fontWeight: '600', fontSize: '0.9rem' }}>Amount</th>
                 <th style={{ padding: '1rem', color: '#8b949e', fontWeight: '600', fontSize: '0.9rem' }}>Status</th>
                 <th style={{ padding: '1rem', color: '#8b949e', fontWeight: '600', fontSize: '0.9rem' }}>Date</th>
+                <th style={{ padding: '1rem', color: '#8b949e', fontWeight: '600', fontSize: '0.9rem', textAlign: 'right' }}>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -124,13 +126,27 @@ export default async function Dashboard() {
                       borderRadius: '20px', 
                       fontSize: '0.8rem', 
                       fontWeight: '600',
-                      backgroundColor: inv.status === 'paid' ? 'rgba(35, 134, 54, 0.2)' : inv.status === 'sent' ? 'rgba(47, 129, 247, 0.2)' : 'rgba(139, 148, 158, 0.2)',
-                      color: inv.status === 'paid' ? 'var(--accent)' : inv.status === 'sent' ? 'var(--primary)' : '#8b949e'
+                      backgroundColor: inv.status === 'paid' ? 'rgba(35, 134, 54, 0.2)' : inv.status === 'cancelled' ? 'rgba(248, 81, 73, 0.2)' : inv.status === 'sent' ? 'rgba(47, 129, 247, 0.2)' : 'rgba(139, 148, 158, 0.2)',
+                      color: inv.status === 'paid' ? 'var(--accent)' : inv.status === 'cancelled' ? '#f85149' : inv.status === 'sent' ? 'var(--primary)' : '#8b949e'
                     }}>
                       {inv.status}
                     </span>
                   </td>
                   <td style={{ padding: '1rem', color: '#8b949e', fontSize: '0.9rem' }}>{new Date(inv.created_at).toLocaleDateString()}</td>
+                  <td style={{ padding: '1rem', textAlign: 'right' }}>
+                    <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+                      {['sent'].includes(inv.status) && (
+                        <form action={updateInvoiceStatus.bind(null, inv.id, 'draft')}>
+                          <button className="btn" style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem', backgroundColor: 'transparent', border: '1px solid var(--border)', color: '#8b949e', cursor: 'pointer' }}>Recall</button>
+                        </form>
+                      )}
+                      {['sent', 'draft'].includes(inv.status) && (
+                        <form action={updateInvoiceStatus.bind(null, inv.id, 'cancelled')}>
+                          <button className="btn" style={{ padding: '0.25rem 0.5rem', fontSize: '0.75rem', backgroundColor: 'transparent', border: '1px solid rgba(248, 81, 73, 0.4)', color: '#f85149', cursor: 'pointer' }}>Cancel</button>
+                        </form>
+                      )}
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>

@@ -2,6 +2,7 @@ import { createClient } from '../../../lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { PlusCircle, FileText, CheckCircle2, Clock } from 'lucide-react'
+import { updateInvoiceStatus } from './actions'
 
 export const dynamic = 'force-dynamic'
 
@@ -55,6 +56,7 @@ export default async function InvoicesPage() {
                   <th style={{ padding: '1rem' }}>Client</th>
                   <th style={{ padding: '1rem' }}>Amount</th>
                   <th style={{ padding: '1rem' }}>Status</th>
+                  <th style={{ padding: '1rem', textAlign: 'right' }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -75,11 +77,29 @@ export default async function InvoicesPage() {
                         <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', padding: '0.25rem 0.75rem', borderRadius: '999px', backgroundColor: 'rgba(46, 160, 67, 0.1)', color: '#3fb950', fontSize: '0.85rem', fontWeight: '500' }}>
                           <CheckCircle2 size={14} /> Paid
                         </span>
+                      ) : inv.status === 'cancelled' ? (
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', padding: '0.25rem 0.75rem', borderRadius: '999px', backgroundColor: 'rgba(248, 81, 73, 0.1)', color: '#f85149', fontSize: '0.85rem', fontWeight: '500' }}>
+                          Cancelled
+                        </span>
                       ) : (
                         <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', padding: '0.25rem 0.75rem', borderRadius: '999px', backgroundColor: 'rgba(210, 153, 34, 0.1)', color: '#d29922', fontSize: '0.85rem', fontWeight: '500' }}>
-                          <Clock size={14} /> {inv.status}
+                          <Clock size={14} /> {inv.status.charAt(0).toUpperCase() + inv.status.slice(1)}
                         </span>
                       )}
+                    </td>
+                    <td style={{ padding: '1rem', textAlign: 'right' }}>
+                      <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+                        {['sent'].includes(inv.status) && (
+                          <form action={updateInvoiceStatus.bind(null, inv.id, 'draft')}>
+                            <button className="btn" style={{ padding: '0.25rem 0.5rem', fontSize: '0.8rem', backgroundColor: 'transparent', border: '1px solid var(--border)', color: '#8b949e', cursor: 'pointer' }}>Recall to Draft</button>
+                          </form>
+                        )}
+                        {['sent', 'draft'].includes(inv.status) && (
+                          <form action={updateInvoiceStatus.bind(null, inv.id, 'cancelled')}>
+                            <button className="btn" style={{ padding: '0.25rem 0.5rem', fontSize: '0.8rem', backgroundColor: 'transparent', border: '1px solid rgba(248, 81, 73, 0.4)', color: '#f85149', cursor: 'pointer' }}>Cancel</button>
+                          </form>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))}

@@ -11,7 +11,7 @@ export default function DashboardLayout({ children }) {
   const navLinks = [
     { name: 'Overview', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Clients', href: '/dashboard/clients', icon: Users },
-    { name: 'Invoices', href: '/invoice/new', icon: FileText },
+    { name: 'Invoices', href: '/dashboard/invoices', icon: FileText },
     { name: 'Settings', href: '/dashboard/settings', icon: Settings },
   ]
 

@@ -4,7 +4,7 @@ import { Settings, Building, CreditCard, Bell, CheckCircle2, AlertTriangle } fro
 import { useState } from 'react'
 import { updateSettingsProfile } from './actions'
 
-export default function SettingsClient({ initialOrg, initialUser, chargesEnabled }) {
+export default function SettingsClient({ initialOrg, initialUser, chargesEnabled, bankLast4, isSubscribed }) {
   const [activeTab, setActiveTab] = useState('profile')
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
@@ -155,23 +155,36 @@ export default function SettingsClient({ initialOrg, initialUser, chargesEnabled
             </button>
           )}
           {chargesEnabled && (
-             <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--success)', fontWeight: 'bold', padding: '0.75rem 1rem', backgroundColor: 'rgba(52, 211, 153, 0.1)', borderRadius: '8px' }}>
-               <CheckCircle2 size={18} /> Stripe Connected & Active
-             </span>
+             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.5rem' }}>
+               <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--success)', fontWeight: 'bold', padding: '0.75rem 1rem', backgroundColor: 'rgba(52, 211, 153, 0.1)', borderRadius: '8px' }}>
+                 <CheckCircle2 size={18} /> Stripe Connected & Active
+               </span>
+               {bankLast4 && (
+                 <span style={{ fontSize: '0.85rem', color: '#8b949e', fontWeight: '500' }}>
+                   Account ending in •••• {bankLast4}
+                 </span>
+               )}
+             </div>
           )}
         </div>
       </div>
 
       {/* Subscription */}
-      <div style={{ backgroundColor: 'rgba(47, 129, 247, 0.05)', border: '1px solid rgba(47, 129, 247, 0.2)', borderRadius: '12px', padding: '2rem', marginBottom: '2rem' }}>
+      <div style={{ backgroundColor: isSubscribed ? 'rgba(52, 211, 153, 0.05)' : 'rgba(47, 129, 247, 0.05)', border: `1px solid ${isSubscribed ? 'rgba(52, 211, 153, 0.2)' : 'rgba(47, 129, 247, 0.2)'}`, borderRadius: '12px', padding: '2rem', marginBottom: '2rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
             <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: 'var(--foreground)' }}>RooferLedger Core <em>(Beta)</em></h3>
             <p style={{ color: '#8b949e', margin: 0 }}>Unlock infinite invoice generation, Twilio SMS, and Resend capabilities.</p>
           </div>
-          <button onClick={handleSubscribe} className="btn btn-primary" style={{ width: 'auto', padding: '0.75rem 2rem', fontSize: '1rem', fontWeight: 'bold' }}>
-            Subscribe Now
-          </button>
+          {isSubscribed ? (
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--success)', fontWeight: 'bold', padding: '0.75rem 1rem', backgroundColor: 'rgba(52, 211, 153, 0.1)', borderRadius: '8px' }}>
+              <CheckCircle2 size={18} /> Subscribed
+            </span>
+          ) : (
+            <button onClick={handleSubscribe} className="btn btn-primary" style={{ width: 'auto', padding: '0.75rem 2rem', fontSize: '1rem', fontWeight: 'bold' }}>
+              Subscribe Now
+            </button>
+          )}
         </div>
       </div>
     </div>

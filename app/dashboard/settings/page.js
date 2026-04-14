@@ -39,16 +39,30 @@ export default async function SettingsPage({ searchParams }) {
 
   // Phase 2: Live Stripe Connect Verification
   let chargesEnabled = false
+  let bankLast4 = null
   if (orgData?.stripe_account_id) {
     try {
       const account = await stripe.accounts.retrieve(orgData.stripe_account_id)
       chargesEnabled = account.charges_enabled
+      
+      // Attempt to get the last 4 digits of the connected bank account
+      if (account.external_accounts?.data?.length > 0) {
+        bankLast4 = account.external_accounts.data[0].last4
+      }
     } catch (e) {
       console.error("Failed to check Stripe account status:", e.message)
     }
   }
 
+  const isSubscribed = orgData?.subscription_status === 'active' || orgData?.subscription_status === 'trialing'
+
   return (
-    <SettingsClient initialOrg={orgData} initialUser={{ email: user.email }} chargesEnabled={chargesEnabled} />
+    <SettingsClient 
+      initialOrg={orgData} 
+      initialUser={{ email: user.email }} 
+      chargesEnabled={chargesEnabled} 
+      bankLast4={bankLast4}
+      isSubscribed={isSubscribed}
+    />
   )
 }

@@ -49,7 +49,7 @@ export default async function InvoicesPage() {
           </div>
         ) : (
           <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+            <table style={{ width: '100%', minWidth: '700px', borderCollapse: 'collapse', textAlign: 'left' }}>
               <thead>
                 <tr style={{ borderBottom: '1px solid var(--border)', color: '#8b949e', fontSize: '0.85rem' }}>
                   <th style={{ padding: '1rem' }}>ID / Date</th>
@@ -63,7 +63,11 @@ export default async function InvoicesPage() {
                 {invoices.map((inv) => (
                   <tr key={inv.id} style={{ borderBottom: '1px solid var(--border)' }}>
                     <td style={{ padding: '1rem' }}>
-                      <div style={{ fontWeight: '500', color: 'var(--foreground)' }}>INV-{inv.id.slice(0, 8)}</div>
+                      <div style={{ fontWeight: '500', color: 'var(--primary)' }}>
+                        <Link href={`/api/invoice/preview?invoiceId=${inv.id}`} target="_blank" style={{ textDecoration: 'underline' }}>
+                          INV-{inv.id.slice(0, 8)}
+                        </Link>
+                      </div>
                       <div style={{ fontSize: '0.85rem', color: '#8b949e' }}>{new Date(inv.created_at).toLocaleDateString()}</div>
                     </td>
                     <td style={{ padding: '1rem', color: 'var(--foreground)' }}>

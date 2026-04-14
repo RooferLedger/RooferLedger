@@ -95,7 +95,7 @@ export default async function Dashboard() {
       </div>
 
       <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>Recent Invoices</h2>
-      <div style={{ backgroundColor: 'var(--surface)', borderRadius: '12px', border: '1px solid var(--border)', overflow: 'hidden' }}>
+      <div style={{ backgroundColor: 'var(--surface)', borderRadius: '12px', border: '1px solid var(--border)', overflowX: 'auto' }}>
         {recentInvoices.length === 0 ? (
           <div style={{ padding: '3rem', textAlign: 'center', color: '#8b949e' }}>
             <FileText size={48} style={{ opacity: 0.5, margin: '0 auto 1rem auto' }} />
@@ -103,7 +103,7 @@ export default async function Dashboard() {
             <p style={{ margin: 0 }}>Create your first invoice to get paid.</p>
           </div>
         ) : (
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+          <table style={{ width: '100%', minWidth: '700px', borderCollapse: 'collapse', textAlign: 'left' }}>
             <thead>
               <tr style={{ backgroundColor: 'rgba(255,255,255,0.05)', borderBottom: '1px solid var(--border)' }}>
                 <th style={{ padding: '1rem', color: '#8b949e', fontWeight: '600', fontSize: '0.9rem' }}>Invoice</th>
@@ -117,7 +117,11 @@ export default async function Dashboard() {
             <tbody>
               {recentInvoices.map(inv => (
                 <tr key={inv.id} style={{ borderBottom: '1px solid var(--border)' }}>
-                  <td style={{ padding: '1rem', fontWeight: '500', color: 'var(--primary)' }}>INV-{inv.id.slice(0, 8)}</td>
+                  <td style={{ padding: '1rem', fontWeight: '500', color: 'var(--primary)' }}>
+                    <Link href={`/api/invoice/preview?invoiceId=${inv.id}`} target="_blank" style={{ textDecoration: 'underline' }}>
+                      INV-{inv.id.slice(0, 8)}
+                    </Link>
+                  </td>
                   <td style={{ padding: '1rem', fontWeight: '500' }}>{inv.clients?.first_name} {inv.clients?.last_name}</td>
                   <td style={{ padding: '1rem', fontWeight: '500' }}>{formatter.format(inv.total)}</td>
                   <td style={{ padding: '1rem' }}>

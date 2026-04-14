@@ -1,6 +1,7 @@
 import { createClient as createServerClient } from '../../lib/supabase/server'
 import { createClient } from '@supabase/supabase-js'
 import PayButton from './PayButton'
+import { stripe } from '../../lib/stripe/server'
 
 export default async function PublicInvoicePayment({ searchParams }) {
   const invoiceId = searchParams?.invoice
@@ -57,6 +58,17 @@ export default async function PublicInvoicePayment({ searchParams }) {
         </div>
       </div>
     )
+  }
+
+  // Verify the merchant has fully configured Stripe and can accept payments
+  let merchantActive = false
+  if (organization?.stripe_account_id) {
+    try {
+      const account = await stripe.accounts.retrieve(organization.stripe_account_id)
+      merchantActive = account.charges_enabled
+    } catch (e) {
+      console.error("Stripe verification failed for public invoice:", e.message)
+    }
   }
 
   const isPaid = invoice.status === 'paid'
@@ -119,7 +131,7 @@ export default async function PublicInvoicePayment({ searchParams }) {
           <PayButton 
             invoiceId={invoice.id} 
             stripeAccountId={organization.stripe_account_id}
-            disabled={!organization.stripe_account_id}
+            disabled={!merchantActive}
           />
         ) : (
           <div style={{ textAlign: 'center', color: '#8b949e', fontSize: '0.9rem' }}>
@@ -127,9 +139,9 @@ export default async function PublicInvoicePayment({ searchParams }) {
           </div>
         )}
 
-        {!organization.stripe_account_id && !isPaid && (
+        {!merchantActive && !isPaid && (
           <div style={{ textAlign: 'center', color: 'var(--danger)', fontSize: '0.85rem', marginTop: '1rem' }}>
-            This business has not yet enabled credit card processing.
+            This business has not fully completed their payment setup to accept credit cards. Please contact them directly to pay this invoice.
           </div>
         )}
       </div>

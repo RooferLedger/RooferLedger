@@ -1,10 +1,10 @@
 'use client'
 
-import { Settings, Building, CreditCard, Bell, CheckCircle2 } from 'lucide-react'
+import { Settings, Building, CreditCard, Bell, CheckCircle2, AlertTriangle } from 'lucide-react'
 import { useState } from 'react'
 import { updateSettingsProfile } from './actions'
 
-export default function SettingsClient({ initialOrg, initialUser }) {
+export default function SettingsClient({ initialOrg, initialUser, chargesEnabled }) {
   const [activeTab, setActiveTab] = useState('profile')
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
@@ -116,17 +116,19 @@ export default function SettingsClient({ initialOrg, initialUser }) {
       <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>Subscription & Billing</h2>
       
       {/* Payment Processing Onboarding */}
-      <div style={{ backgroundColor: 'rgba(52, 211, 153, 0.05)', border: '1px solid rgba(52, 211, 153, 0.2)', borderRadius: '12px', padding: '2rem', marginBottom: '2rem' }}>
+      <div style={{ backgroundColor: chargesEnabled ? 'rgba(52, 211, 153, 0.05)' : initialOrg?.stripe_account_id ? 'rgba(210, 153, 34, 0.05)' : 'rgba(47, 129, 247, 0.05)', border: `1px solid ${chargesEnabled ? 'rgba(52, 211, 153, 0.2)' : initialOrg?.stripe_account_id ? 'rgba(210, 153, 34, 0.2)' : 'rgba(47, 129, 247, 0.2)'}`, borderRadius: '12px', padding: '2rem', marginBottom: '2rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
             <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', color: 'var(--foreground)' }}>Accept Credit Cards</h3>
             <p style={{ color: '#8b949e', margin: 0, maxWidth: '400px' }}>
-              {initialOrg?.stripe_account_id 
+              {chargesEnabled 
                 ? 'Your Stripe account is successfully linked. You can accept payments on invoices.' 
-                : 'Link your bank account via Stripe Connect to allow homeowners to pay your invoices online instantly.'}
+                : initialOrg?.stripe_account_id 
+                  ? 'Your account was created but setup is incomplete! You cannot accept payments yet.'
+                  : 'Link your bank account via Stripe Connect to allow homeowners to pay your invoices online instantly.'}
             </p>
           </div>
-          {!initialOrg?.stripe_account_id && (
+          {!chargesEnabled && (
             <button 
               onClick={async (e) => {
                 e.target.disabled = true;
@@ -136,25 +138,25 @@ export default function SettingsClient({ initialOrg, initialUser }) {
                   const data = await res.json();
                   if (data.url) window.location.href = data.url;
                   else {
-                    e.target.innerText = 'Connect Bank Account';
+                    e.target.innerText = initialOrg?.stripe_account_id ? 'Resume Onboarding' : 'Connect Bank Account';
                     e.target.disabled = false;
                     alert("Stripe Integration Error: " + (data.error || JSON.stringify(data)));
                   }
                 } catch(err) {
-                  e.target.innerText = 'Connect Bank Account';
+                  e.target.innerText = initialOrg?.stripe_account_id ? 'Resume Onboarding' : 'Connect Bank Account';
                   e.target.disabled = false;
                   alert("Gateway error: " + err.message);
                 }
               }} 
               className="btn btn-primary" 
-              style={{ width: 'auto', padding: '0.75rem 2rem', fontSize: '1rem', fontWeight: 'bold', backgroundColor: '#3fb950', color: '#fff' }}
+              style={{ width: 'auto', padding: '0.75rem 2rem', fontSize: '1rem', fontWeight: 'bold', backgroundColor: initialOrg?.stripe_account_id ? '#d29922' : '#2f81f7', color: '#fff' }}
             >
-              Connect Bank Account
+              {initialOrg?.stripe_account_id ? 'Resume Onboarding' : 'Connect Bank Account'}
             </button>
           )}
-          {initialOrg?.stripe_account_id && (
+          {chargesEnabled && (
              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--success)', fontWeight: 'bold', padding: '0.75rem 1rem', backgroundColor: 'rgba(52, 211, 153, 0.1)', borderRadius: '8px' }}>
-               <CheckCircle2 size={18} /> Stripe Connected
+               <CheckCircle2 size={18} /> Stripe Connected & Active
              </span>
           )}
         </div>

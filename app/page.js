@@ -189,7 +189,6 @@ export default function Home() {
       <div style={{ backgroundColor: '#0d1117', padding: '6rem 1.5rem' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '5rem' }}>
-             <div style={{ color: 'var(--primary)', fontWeight: 'bold', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem' }}>Visual Flow</div>
              <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', color: '#fff', marginBottom: '1rem', fontWeight: '900', letterSpacing: '-0.02em' }}>How RooferLedger Works</h2>
              <p style={{ color: '#a1a1aa', fontSize: '1.15rem', maxWidth: '650px', margin: '0 auto' }}>A seamless start-to-finish payment pipeline natively built for the field.</p>
           </div>

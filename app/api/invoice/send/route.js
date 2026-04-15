@@ -20,7 +20,7 @@ export async function POST(request) {
     // 2. Fetch User Organization & Client Details
     const { data: userData } = await supabase.from('users').select('organization_id').eq('id', user.id).single()
     const { data: clientData } = await supabase.from('clients').select('*').eq('id', data.clientId).single()
-    const { data: orgData } = await supabase.from('organizations').select('name, logo_url, address').eq('id', userData?.organization_id).single()
+    const { data: orgData } = await supabase.from('organizations').select('name, logo_url, address, subscription_status, stripe_customer_id').eq('id', userData?.organization_id).single()
 
     if (!clientData) return NextResponse.json({ error: 'Client not found' }, { status: 404 })
 
@@ -30,7 +30,27 @@ export async function POST(request) {
       .select('*', { count: 'exact', head: true })
       .eq('organization_id', userData.organization_id)
       
-    const isPremium = orgData?.subscription_status === 'active' || orgData?.subscription_status === 'trialing'
+    let isPremium = orgData?.subscription_status === 'active' || orgData?.subscription_status === 'trialing'
+
+    // Live Auto-Heal Fallback
+    if (!isPremium && orgData?.stripe_customer_id) {
+      const { stripe } = require('../../../../lib/stripe/server')
+      try {
+        const subscriptions = await stripe.subscriptions.list({
+          customer: orgData.stripe_customer_id,
+          status: 'active',
+          limit: 1
+        })
+        if (subscriptions.data.length > 0) {
+          isPremium = true
+          const { createClient: createAdminClient } = require('@supabase/supabase-js')
+          const supabaseAdmin = createAdminClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY)
+          await supabaseAdmin.from('organizations').update({ subscription_status: 'active' }).eq('id', userData.organization_id)
+        }
+      } catch (err) {
+        console.error("Live Stripe verify failed in API:", err.message)
+      }
+    }
     if (invoiceCount >= 3 && !isPremium) {
       return NextResponse.json({ error: 'Free tier limit reached (3 invoices). Please upgrade your subscription.' }, { status: 403 })
     }

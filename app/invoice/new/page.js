@@ -29,9 +29,29 @@ export default async function NewInvoicePage() {
     .eq('organization_id', orgId)
 
   // Get org subscription status
-  const { data: orgData } = await supabase.from('organizations').select('subscription_status').eq('id', orgId).single()
+  const { data: orgData } = await supabase.from('organizations').select('subscription_status, stripe_customer_id').eq('id', orgId).single()
   
-  const isPremium = orgData?.subscription_status === 'active' || orgData?.subscription_status === 'trialing'
+  let isPremium = orgData?.subscription_status === 'active' || orgData?.subscription_status === 'trialing'
+
+  // Live Auto-Heal Fallback
+  if (!isPremium && orgData?.stripe_customer_id) {
+    const { stripe } = require('../../../lib/stripe/server')
+    try {
+      const subscriptions = await stripe.subscriptions.list({
+        customer: orgData.stripe_customer_id,
+        status: 'active',
+        limit: 1
+      })
+      if (subscriptions.data.length > 0) {
+        isPremium = true
+        const { createClient: createAdminClient } = require('@supabase/supabase-js')
+        const supabaseAdmin = createAdminClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY)
+        await supabaseAdmin.from('organizations').update({ subscription_status: 'active' }).eq('id', orgId)
+      }
+    } catch (err) {
+      console.error("Live Stripe verify failed:", err.message)
+    }
+  }
   const reachedLimit = (invoiceCount >= 3) && !isPremium
 
   if (reachedLimit) {

@@ -35,10 +35,10 @@ export async function POST(req) {
         console.log(`Subscription for customer ${customerId} updated to: ${status}`)
         
         // Phase 4 Logic (Active Supabase DB Sync):
-        const { createClient } = require('../../../lib/supabase/server')
-        const supabase = createClient()
+        const { createClient: createAdminClient } = require('@supabase/supabase-js')
+        const supabaseAdmin = createAdminClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY)
 
-        await supabase
+        await supabaseAdmin
           .from('organizations')
           .update({ subscription_status: status })
           .eq('stripe_customer_id', customerId)

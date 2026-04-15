@@ -73,9 +73,10 @@ export async function POST(request) {
       tax,
       total,
       lineItems: data.lineItems,
-      companyName: orgData?.name || 'RooferLedger',
+      companyName: orgData?.name || 'Your Company',
       companyEmail: user.email,
       companyAddress: orgData?.address,
+      companyPhone: orgData?.phone,
       logoUrl: orgData?.logo_url,
       notes: data.notes
     }

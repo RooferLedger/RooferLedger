@@ -8,6 +8,21 @@ export default function SettingsClient({ initialOrg, initialUser, chargesEnabled
   const [activeTab, setActiveTab] = useState('profile')
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
+  const [logoPreview, setLogoPreview] = useState(initialOrg?.logo_url)
+  const [logoBase64, setLogoBase64] = useState('')
+
+  const handleLogoChange = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) { alert("File too large. Max 2MB."); return; }
+      const reader = new FileReader()
+      reader.onload = (event) => {
+        setLogoPreview(event.target.result)
+        setLogoBase64(event.target.result)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
 
   const handleSaveProfile = async (e) => {
     e.preventDefault()
@@ -36,14 +51,15 @@ export default function SettingsClient({ initialOrg, initialUser, chargesEnabled
           <label className="input-label" style={{ marginBottom: 0 }}>Company Logo</label>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
             <div style={{ width: '80px', height: '80px', borderRadius: '12px', border: '2px dashed var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.02)', overflow: 'hidden' }}>
-              {initialOrg?.logo_url ? (
-                <img src={initialOrg.logo_url} alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              {logoPreview ? (
+                <img src={logoPreview} alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
               ) : (
                 <span style={{ fontSize: '0.8rem', color: '#8b949e' }}>No Logo</span>
               )}
             </div>
             <div>
-              <input type="file" id="logoUpload" style={{ display: 'none' }} accept="image/png, image/jpeg" />
+              <input type="hidden" name="logoBase64" value={logoBase64} />
+              <input type="file" id="logoUpload" style={{ display: 'none' }} accept="image/png, image/jpeg" onChange={handleLogoChange} />
               <label htmlFor="logoUpload" className="btn btn-secondary" style={{ cursor: 'pointer', padding: '0.5rem 1rem', fontSize: '0.9rem' }}>
                 Choose Image (.png, .jpg)
               </label>

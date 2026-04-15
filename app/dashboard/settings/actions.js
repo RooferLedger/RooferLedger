@@ -7,6 +7,7 @@ export async function updateSettingsProfile(formData) {
   const companyName = formData.get('companyName')
   const phone = formData.get('phone')
   const address = formData.get('address')
+  const logoBase64 = formData.get('logoBase64')
   
   const supabase = createClient()
   const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -29,7 +30,12 @@ export async function updateSettingsProfile(formData) {
 
   const updatePayload = {
     name: companyName,
+    phone: phone || null,
     address: address || null,
+  }
+  
+  if (logoBase64) {
+    updatePayload.logo_url = logoBase64
   }
 
   if (userError || !userData?.organization_id) {

@@ -39,14 +39,16 @@ export default async function NewInvoicePage() {
     try {
       const subscriptions = await stripe.subscriptions.list({
         customer: orgData.stripe_customer_id,
-        status: 'active',
-        limit: 1
+        status: 'all',
+        limit: 10
       })
-      if (subscriptions.data.length > 0) {
+      const validSub = subscriptions.data.find(s => s.status === 'active' || s.status === 'trialing')
+      
+      if (validSub) {
         isPremium = true
         const { createClient: createAdminClient } = require('@supabase/supabase-js')
         const supabaseAdmin = createAdminClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY)
-        await supabaseAdmin.from('organizations').update({ subscription_status: 'active' }).eq('id', orgId)
+        await supabaseAdmin.from('organizations').update({ subscription_status: validSub.status }).eq('id', orgId)
       }
     } catch (err) {
       console.error("Live Stripe verify failed:", err.message)

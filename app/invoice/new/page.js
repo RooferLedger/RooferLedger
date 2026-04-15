@@ -1,6 +1,8 @@
 import InvoiceForm from './InvoiceForm'
 import { createClient } from '../../../lib/supabase/server'
 import { redirect } from 'next/navigation'
+import { stripe } from '../../../lib/stripe/server'
+import { createClient as createAdminClient } from '@supabase/supabase-js'
 
 export const dynamic = 'force-dynamic'
 
@@ -34,21 +36,34 @@ export default async function NewInvoicePage() {
   let isPremium = orgData?.subscription_status === 'active' || orgData?.subscription_status === 'trialing'
 
   // Live Auto-Heal Fallback
-  if (!isPremium && orgData?.stripe_customer_id) {
-    const { stripe } = require('../../../lib/stripe/server')
+  if (!isPremium) {
     try {
-      const subscriptions = await stripe.subscriptions.list({
-        customer: orgData.stripe_customer_id,
-        status: 'all',
-        limit: 10
-      })
-      const validSub = subscriptions.data.find(s => s.status === 'active' || s.status === 'trialing')
-      
-      if (validSub) {
-        isPremium = true
-        const { createClient: createAdminClient } = require('@supabase/supabase-js')
-        const supabaseAdmin = createAdminClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY)
-        await supabaseAdmin.from('organizations').update({ subscription_status: validSub.status }).eq('id', orgId)
+      let customerIdToFind = orgData?.stripe_customer_id
+
+      // If no customer ID in DB, search Stripe by user's email
+      if (!customerIdToFind && user.email) {
+        const customers = await stripe.customers.list({ email: user.email, limit: 1 })
+        if (customers.data.length > 0) {
+          customerIdToFind = customers.data[0].id
+        }
+      }
+
+      if (customerIdToFind) {
+        const subscriptions = await stripe.subscriptions.list({
+          customer: customerIdToFind,
+          status: 'all',
+          limit: 10
+        })
+        const validSub = subscriptions.data.find(s => s.status === 'active' || s.status === 'trialing')
+        
+        if (validSub) {
+          isPremium = true
+          const supabaseAdmin = createAdminClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY)
+          await supabaseAdmin.from('organizations').update({ 
+            subscription_status: validSub.status,
+            stripe_customer_id: customerIdToFind
+          }).eq('id', orgId)
+        }
       }
     } catch (err) {
       console.error("Live Stripe verify failed:", err.message)

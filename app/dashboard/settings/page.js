@@ -25,10 +25,7 @@ export default async function SettingsPage({ searchParams }) {
     redirect('/onboarding/business')
   }
 
-  // Phase 1: Aggressive Paywall Unlock Bypass
-  if (searchParams?.checkout === 'success') {
-    await supabase.from('organizations').update({ subscription_status: 'active' }).eq('id', userData.organization_id)
-  }
+  // The webhook now securely handles subscription upgrades
 
   // Fetch true organization profile
   const { data: orgData } = await supabase

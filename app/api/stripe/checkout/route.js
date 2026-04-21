@@ -34,7 +34,9 @@ export async function POST(request) {
         }
       })
       customerId = customer.id
-      await supabase.from('organizations').update({ stripe_customer_id: customerId }).eq('id', userData.organization_id)
+      const { createClient: createAdminClient } = require('@supabase/supabase-js')
+      const supabaseAdmin = createAdminClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY)
+      await supabaseAdmin.from('organizations').update({ stripe_customer_id: customerId }).eq('id', userData.organization_id)
     }
 
     // Generate Hosted Checkout Session

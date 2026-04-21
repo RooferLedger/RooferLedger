@@ -1,19 +1,23 @@
-require('dotenv').config({ path: '.env.local' });
-const { createClient } = require('@supabase/supabase-js');
+const fs = require('fs');
 
-const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
-
-async function run() {
-  const { data: users } = await supabase.from('users').select('*').eq('email', 'cpapafio@gmail.com');
-  console.log("USERS:", users);
-  
-  if (users && users.length > 0 && users[0].organization_id) {
-    const orgId = users[0].organization_id;
-    const { data: org } = await supabase.from('organizations').select('*').eq('id', orgId);
-    console.log("ORG:", org);
-
-    const { count } = await supabase.from('invoices').select('*', { count: 'exact', head: true }).eq('organization_id', orgId);
-    console.log("INVOICES COUNT:", count);
+async function main() {
+  const env = fs.readFileSync('.env.local', 'utf8').split('\n');
+  let url = '';
+  let key = '';
+  for (const line of env) {
+    if (line.startsWith('NEXT_PUBLIC_SUPABASE_URL=')) url = line.split('=')[1].replace(/['"]/g, '');
+    if (line.startsWith('SUPABASE_SERVICE_ROLE_KEY=')) key = line.split('=')[1].replace(/['"]/g, '');
   }
+
+  const res = await fetch(`${url}/rest/v1/organizations?limit=1`, {
+    headers: {
+      'apikey': key,
+      'Authorization': `Bearer ${key}`
+    }
+  });
+
+  const data = await res.json();
+  console.log(JSON.stringify(data, null, 2));
 }
-run();
+
+main();

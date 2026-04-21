@@ -165,8 +165,8 @@ export default function Home() {
             padding: '6px'
           }}>
             <img 
-              src="/hero-mockup.png" 
-              alt="RooferLedger App in action on a roof" 
+              src="/hero-mockup-v2.png" 
+              alt="Professional roofer generating an invoice on a smartphone while on a roof" 
               style={{ width: '100%', borderRadius: '18px', display: 'block' }} 
             />
           </div>

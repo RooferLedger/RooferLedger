@@ -36,7 +36,7 @@ export async function GET(request) {
     // Fetch the org data
     const { data: orgData } = await supabase
       .from('organizations')
-      .select('name, logo_url, address')
+      .select('*')
       .eq('id', invoice.organization_id)
       .single()
 

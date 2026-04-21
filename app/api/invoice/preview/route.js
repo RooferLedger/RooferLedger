@@ -17,7 +17,8 @@ export async function POST(request) {
     if (user) {
       const { data: userData } = await supabase.from('users').select('organization_id').eq('id', user.id).single()
       if (userData?.organization_id) {
-        const { data: org } = await supabase.from('organizations').select('name, logo_url, address, phone').eq('id', userData.organization_id).single()
+        const { data: org, error: orgError } = await supabase.from('organizations').select('*').eq('id', userData.organization_id).single()
+        if (orgError) console.error("Org Fetch Error:", orgError)
         orgData = org
       }
     }

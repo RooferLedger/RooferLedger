@@ -22,7 +22,8 @@ export async function POST(request) {
     // 2. Fetch User Organization & Client Details
     const { data: userData } = await supabase.from('users').select('organization_id').eq('id', user.id).single()
     const { data: clientData } = await supabase.from('clients').select('*').eq('id', data.clientId).single()
-    const { data: orgData } = await supabase.from('organizations').select('name, logo_url, address, subscription_status, stripe_customer_id').eq('id', userData?.organization_id).single()
+    const { data: orgData, error: orgError } = await supabase.from('organizations').select('*').eq('id', userData?.organization_id).single()
+    if (orgError) console.error("Org Fetch Error:", orgError)
 
     if (!clientData) return NextResponse.json({ error: 'Client not found' }, { status: 404 })
 

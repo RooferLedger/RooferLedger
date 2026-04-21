@@ -3,6 +3,8 @@ import { createClient } from '@supabase/supabase-js'
 import PayButton from './PayButton'
 import { stripe } from '../../lib/stripe/server'
 
+export const dynamic = 'force-dynamic'
+
 export default async function PublicInvoicePayment({ searchParams }) {
   const invoiceId = searchParams?.invoice
 

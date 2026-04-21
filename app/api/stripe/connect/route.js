@@ -36,8 +36,10 @@ export async function POST(request) {
       })
       stripeAccountId = account.id
 
-      // Save it to Supabase
-      await supabase.from('organizations').update({ stripe_account_id: stripeAccountId }).eq('id', userData.organization_id)
+      // Save it to Supabase safely via admin
+      const { createClient: createAdminClient } = require('@supabase/supabase-js')
+      const supabaseAdmin = createAdminClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY)
+      await supabaseAdmin.from('organizations').update({ stripe_account_id: stripeAccountId }).eq('id', userData.organization_id)
     }
 
     // Create an Account Link for onboarding

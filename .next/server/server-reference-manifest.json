@@ -1,56 +1,5 @@
 {
-  "node": {
-    "86c919296152e983b7daecb8112239ab702ec5bf": {
-      "workers": {
-        "app/dashboard/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fpelhaminsightsllc%2F.gemini%2Fantigravity%2Fscratch%2FRoofer_Invoicing_SaaS%2Fapp%2Factions.js%22%2C%5B%22signOutAction%22%5D%5D%5D&__client_imported__=true!",
-        "app/dashboard/settings/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fpelhaminsightsllc%2F.gemini%2Fantigravity%2Fscratch%2FRoofer_Invoicing_SaaS%2Fapp%2Fdashboard%2Fsettings%2Factions.js%22%2C%5B%22updateSettingsProfile%22%5D%5D%2C%5B%22%2FUsers%2Fpelhaminsightsllc%2F.gemini%2Fantigravity%2Fscratch%2FRoofer_Invoicing_SaaS%2Fapp%2Factions.js%22%2C%5B%22signOutAction%22%5D%5D%5D&__client_imported__=true!"
-      },
-      "layer": {
-        "app/dashboard/page": "action-browser",
-        "app/dashboard/settings/page": "action-browser"
-      }
-    },
-    "0d03ee350b7944b92a9b3f1dda84f675d53d206a": {
-      "workers": {
-        "app/login/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fpelhaminsightsllc%2F.gemini%2Fantigravity%2Fscratch%2FRoofer_Invoicing_SaaS%2Fapp%2Flogin%2Fpage.js%22%2C%5B%22%24%24ACTION_1%22%2C%22%24%24ACTION_0%22%5D%5D%5D&__client_imported__=!"
-      },
-      "layer": {
-        "app/login/page": "rsc"
-      }
-    },
-    "146228fbb77279507cfecdae94c1aab8c08e4388": {
-      "workers": {
-        "app/login/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fpelhaminsightsllc%2F.gemini%2Fantigravity%2Fscratch%2FRoofer_Invoicing_SaaS%2Fapp%2Flogin%2Fpage.js%22%2C%5B%22%24%24ACTION_1%22%2C%22%24%24ACTION_0%22%5D%5D%5D&__client_imported__=!"
-      },
-      "layer": {
-        "app/login/page": "rsc"
-      }
-    },
-    "efe7122893e3580b36968fd3b0f7f1ecd0299e42": {
-      "workers": {
-        "app/onboarding/business/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fpelhaminsightsllc%2F.gemini%2Fantigravity%2Fscratch%2FRoofer_Invoicing_SaaS%2Fapp%2Fonboarding%2Fbusiness%2Factions.js%22%2C%5B%22updateOrganizationProfile%22%5D%5D%5D&__client_imported__=true!"
-      },
-      "layer": {
-        "app/onboarding/business/page": "action-browser"
-      }
-    },
-    "c406f30d32eea668d24fea900c48a878375b98e6": {
-      "workers": {
-        "app/dashboard/settings/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fpelhaminsightsllc%2F.gemini%2Fantigravity%2Fscratch%2FRoofer_Invoicing_SaaS%2Fapp%2Fdashboard%2Fsettings%2Factions.js%22%2C%5B%22updateSettingsProfile%22%5D%5D%2C%5B%22%2FUsers%2Fpelhaminsightsllc%2F.gemini%2Fantigravity%2Fscratch%2FRoofer_Invoicing_SaaS%2Fapp%2Factions.js%22%2C%5B%22signOutAction%22%5D%5D%5D&__client_imported__=true!"
-      },
-      "layer": {
-        "app/dashboard/settings/page": "action-browser"
-      }
-    },
-    "fec37c96cd460375bd7f36957df23e22370aa67d": {
-      "workers": {
-        "app/dashboard/page": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fpelhaminsightsllc%2F.gemini%2Fantigravity%2Fscratch%2FRoofer_Invoicing_SaaS%2Fapp%2Fdashboard%2Finvoices%2Factions.js%22%2C%5B%22updateInvoiceStatus%22%5D%5D%5D&__client_imported__=!"
-      },
-      "layer": {
-        "app/dashboard/page": "rsc"
-      }
-    }
-  },
+  "node": {},
   "edge": {},
-  "encryptionKey": "ej0tyKIvERHyOLd0Ree5+hB0it/dfZ71U0W9rviUTQY="
+  "encryptionKey": "yGtvRXx1AobTh7+M1lNJOx89yyuh2qiRnV4BOIkCijE="
 }

@@ -85,7 +85,7 @@ export default function LoginPage({ searchParams }) {
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: '1rem' }}>
+          <div className="auth-buttons">
             <button formAction={login} className="btn btn-primary" style={{ flex: 1 }}>
               Sign In
             </button>

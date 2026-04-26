@@ -42,7 +42,7 @@ export default function Home() {
       </div>
 
       {/* Navigation Bar */}
-      <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.5rem 2rem', maxWidth: '1200px', margin: '0 auto', flexWrap: 'wrap', gap: '1rem' }}>
+      <nav className="nav-bar">
         <Link href="/" style={{ textDecoration: 'none', fontSize: '1.5rem', fontWeight: '900', color: '#fff', letterSpacing: '-0.5px' }}>
           Roofer<span style={{ color: 'var(--primary)' }}>Ledger</span>
         </Link>
@@ -89,7 +89,7 @@ export default function Home() {
             <CheckCircle2 size={18} /> Your first 3 invoices are completely on us.
           </div>
 
-          <form onSubmit={handleStart} style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem', maxWidth: '450px' }}>
+          <form onSubmit={handleStart} className="hero-form">
             <input 
               type="email" 
               placeholder="Enter your email address..."
@@ -129,7 +129,7 @@ export default function Home() {
           </form>
           
           {/* Micro-Proofing Elements */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '1rem' }}>
+          <div className="micro-proof">
             <div style={{ display: 'flex', gap: '2px', color: '#fbbf24' }}>
               <Star size={16} fill="currentColor" />
               <Star size={16} fill="currentColor" />
@@ -140,10 +140,10 @@ export default function Home() {
             <div style={{ color: '#8b949e', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <span style={{ fontWeight: '600', color: '#c9d1d9' }}>4.9/5</span> from 50+ Roofing Pros
             </div>
-            <div style={{ paddingLeft: '1rem', borderLeft: '1px solid var(--border)', color: '#8b949e', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <div className="micro-proof-divider" style={{ gap: '4px' }}>
                <CheckCircle2 size={14} color="var(--success)" /> No credit card required.
             </div>
-            <div style={{ paddingLeft: '1rem', borderLeft: '1px solid var(--border)', color: '#8b949e', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <div className="micro-proof-divider" style={{ gap: '6px' }}>
                <ShieldCheck size={16} color="#635BFF" /> <span>Secure Payments by <strong style={{ color: '#c9d1d9' }}>Stripe</strong></span>
             </div>
           </div>

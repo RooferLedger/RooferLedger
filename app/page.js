@@ -22,6 +22,9 @@ export default function Home() {
 
   const handleStart = (e) => {
     e.preventDefault()
+    if (typeof window !== 'undefined' && window.fbq) {
+      window.fbq('track', 'InitiateCheckout');
+    }
     if (isLoggedIn) {
       router.push('/dashboard')
     } else if (email) {

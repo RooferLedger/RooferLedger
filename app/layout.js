@@ -1,4 +1,5 @@
 import './globals.css'
+import FacebookPixel from './components/FacebookPixel'
 
 export const metadata = {
   title: 'RooferLedger | The Invoicing Engine for Roofers',
@@ -8,7 +9,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <FacebookPixel />
+        {children}
+      </body>
     </html>
   )
 }

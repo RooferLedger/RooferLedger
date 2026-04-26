@@ -51,6 +51,9 @@ export default function BusinessSetup() {
 
   const clientAction = async (formDataEvent) => {
     setLoading(true)
+    if (typeof window !== 'undefined' && window.fbq) {
+      window.fbq('track', 'CompleteRegistration');
+    }
     try {
       await updateOrganizationProfile(formDataEvent)
     } catch (err) {

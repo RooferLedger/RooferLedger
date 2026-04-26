@@ -11,7 +11,6 @@ export default function BusinessSetup() {
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({ companyName: '', phone: '', address: '' })
   const [logoBase64, setLogoBase64] = useState('')
-  const [showOptional, setShowOptional] = useState(false)
 
   const supabase = createClient()
 
@@ -46,7 +45,6 @@ export default function BusinessSetup() {
     const reader = new FileReader()
     reader.onloadend = () => {
       setLogoBase64(reader.result)
-      setShowOptional(true) // Auto-expand if they upload
     }
     reader.readAsDataURL(file)
   }
@@ -100,19 +98,8 @@ export default function BusinessSetup() {
           </div>
         </div>
 
-        {/* Optional Toggle */}
-        <button 
-          type="button" 
-          onClick={() => setShowOptional(!showOptional)}
-          style={{ background: 'none', border: 'none', color: '#8b949e', display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', padding: '0.5rem 0', alignSelf: 'flex-start', fontSize: '0.9rem' }}
-        >
-          {showOptional ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-          {showOptional ? 'Hide Optional Settings' : 'Add Logo & Details (Optional)'}
-        </button>
-
-        {/* Hidden Complexity */}
-        {showOptional && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', padding: '1.5rem', backgroundColor: 'rgba(255,255,255,0.02)', borderRadius: '12px', border: '1px solid var(--border)' }}>
+        {/* Optional Details */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', padding: '1.5rem', backgroundColor: 'rgba(255,255,255,0.02)', borderRadius: '12px', border: '1px solid var(--border)' }}>
             
             <div>
               <label style={{ display: 'block', marginBottom: '0.5rem', color: '#c9d1d9', fontSize: '0.9rem' }}>Company Logo</label>
@@ -160,7 +147,6 @@ export default function BusinessSetup() {
               </div>
             </div>
           </div>
-        )}
 
         <button 
           type="submit" 

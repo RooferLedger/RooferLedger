@@ -1,4 +1,5 @@
 import './globals.css'
+import { Suspense } from 'react'
 import FacebookPixel from './components/FacebookPixel'
 
 export const metadata = {
@@ -10,7 +11,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <FacebookPixel />
+        <Suspense fallback={null}>
+          <FacebookPixel />
+        </Suspense>
         {children}
       </body>
     </html>

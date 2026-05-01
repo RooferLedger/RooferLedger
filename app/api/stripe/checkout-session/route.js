@@ -68,7 +68,7 @@ export async function POST(request) {
 
     // 5. Create Stripe Checkout Session using Destination Charges
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'], // Automatically includes Apple Pay/Google Pay
+      payment_method_types: ['card', 'us_bank_account'], // Includes Apple Pay/Google Pay and ACH Bank Transfers
       line_items: stripeLineItems,
       mode: 'payment',
       success_url: `${origin}/pay/success?invoice=${invoice.id}`,

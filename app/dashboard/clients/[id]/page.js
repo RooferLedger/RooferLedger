@@ -13,20 +13,26 @@ export default async function ClientViewPage({ params }) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return redirect('/')
 
-  // Fetch client details
+  // Fetch user organization
+  const { data: userData } = await supabase.from('users').select('organization_id').eq('id', user.id).single()
+  if (!userData?.organization_id) return redirect('/')
+
+  // Fetch client details with org enforcement
   const { data: client, error: clientError } = await supabase
     .from('clients')
     .select('*')
     .eq('id', id)
+    .eq('organization_id', userData.organization_id)
     .single()
 
   if (clientError || !client) return redirect('/dashboard/clients')
 
-  // Fetch past invoices for this specific client
+  // Fetch past invoices for this specific client, enforcing org bounds
   const { data: invoices } = await supabase
     .from('invoices')
     .select('id, created_at, total, status')
     .eq('client_id', id)
+    .eq('organization_id', userData.organization_id)
     .order('created_at', { ascending: false })
 
   const safeInvoices = invoices || []

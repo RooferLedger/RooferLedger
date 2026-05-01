@@ -1,6 +1,7 @@
 import { createClient } from '../../../lib/supabase/server'
 import { CheckCircle2, ShieldCheck, ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
+import TrackPaymentClient from './TrackPaymentClient'
 
 export default async function PaymentSuccess({ searchParams }) {
   const invoiceId = searchParams?.invoice
@@ -19,7 +20,7 @@ export default async function PaymentSuccess({ searchParams }) {
   // Verify the invoice exists
   const { data: invoice } = await supabase
     .from('invoices')
-    .select('id, status, organizations(name)')
+    .select('id, status, total, organizations(name)')
     .eq('id', invoiceId)
     .single()
 
@@ -46,6 +47,8 @@ export default async function PaymentSuccess({ searchParams }) {
         textAlign: 'center'
       }}>
         
+        <TrackPaymentClient value={invoice?.total || 0} />
+
         <div style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(52, 211, 153, 0.1)', padding: '1rem', borderRadius: '50%', marginBottom: '1.5rem' }}>
           <CheckCircle2 color="var(--success)" size={48} />
         </div>

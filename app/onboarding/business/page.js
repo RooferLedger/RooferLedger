@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { Suspense } from 'react'
+import TrackSignupClient from './TrackSignupClient'
 import { ArrowRight, Building2, Phone, ImagePlus, MapPin, ChevronDown, ChevronUp } from 'lucide-react'
 import { updateOrganizationProfile } from './actions'
 import { createClient } from '../../../lib/supabase/client'
@@ -51,9 +53,6 @@ export default function BusinessSetup() {
 
   const clientAction = async (formDataEvent) => {
     setLoading(true)
-    if (typeof window !== 'undefined' && window.fbq) {
-      window.fbq('track', 'CompleteRegistration');
-    }
     try {
       await updateOrganizationProfile(formDataEvent)
     } catch (err) {
@@ -64,6 +63,9 @@ export default function BusinessSetup() {
 
   return (
     <div>
+      <Suspense fallback={null}>
+        <TrackSignupClient />
+      </Suspense>
       <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
         <h2 style={{ fontSize: '1.75rem', color: '#fff', margin: '0 0 0.5rem 0', fontWeight: '900' }}>Welcome aboard!</h2>
         <p style={{ color: '#a1a1aa', fontSize: '1rem', margin: 0 }}>What name do you want on your invoices?</p>

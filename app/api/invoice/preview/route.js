@@ -28,8 +28,8 @@ export async function POST(request) {
     let clientName = data.clientName || 'Valued Client'
     
     // Fetch live client data for the preview if selected
-    if (data.clientId) {
-      const { data: clientData } = await supabase.from('clients').select('*').eq('id', data.clientId).single()
+    if (data.clientId && orgData) {
+      const { data: clientData } = await supabase.from('clients').select('*').eq('id', data.clientId).eq('organization_id', orgData.id).single()
       if (clientData) {
         clientName = `${clientData.first_name} ${clientData.last_name}`
         clientEmail = clientData.email

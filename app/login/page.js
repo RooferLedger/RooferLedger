@@ -41,7 +41,7 @@ export default function LoginPage({ searchParams }) {
     }
     
     revalidatePath('/', 'layout')
-    redirect('/onboarding/business')
+    redirect('/onboarding/business?new_signup=true')
   }
 
   return (

@@ -21,11 +21,25 @@ export async function POST(request) {
 
     // 2. Fetch User Organization & Client Details
     const { data: userData } = await supabase.from('users').select('organization_id').eq('id', user.id).single()
-    const { data: clientData } = await supabase.from('clients').select('*').eq('id', data.clientId).single()
-    const { data: orgData, error: orgError } = await supabase.from('organizations').select('*').eq('id', userData?.organization_id).single()
+    if (!userData?.organization_id) return NextResponse.json({ error: 'Organization not found' }, { status: 403 })
+
+    const { data: clientData } = await supabase.from('clients').select('*').eq('id', data.clientId).eq('organization_id', userData.organization_id).single()
+    const { data: orgData, error: orgError } = await supabase.from('organizations').select('*').eq('id', userData.organization_id).single()
     if (orgError) console.error("Org Fetch Error:", orgError)
 
     if (!clientData) return NextResponse.json({ error: 'Client not found' }, { status: 404 })
+
+    // 2.4 Security: API Rate Limiting (Prevent EDoS)
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString()
+    const { count: recentInvoiceCount } = await supabase
+      .from('invoices')
+      .select('*', { count: 'exact', head: true })
+      .eq('organization_id', userData.organization_id)
+      .gte('created_at', oneHourAgo)
+      
+    if (recentInvoiceCount >= 15) {
+      return NextResponse.json({ error: 'Rate limit exceeded. You can only send 15 invoices per hour.' }, { status: 429 })
+    }
 
     // 2.5 Security: Free Tier Limit Enforcement
     const { count: invoiceCount } = await supabase

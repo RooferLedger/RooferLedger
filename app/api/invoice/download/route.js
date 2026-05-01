@@ -22,11 +22,17 @@ export async function GET(request) {
       return new NextResponse('Unauthorized', { status: 401 })
     }
 
+    const { data: userData } = await supabase.from('users').select('organization_id').eq('id', user.id).single()
+    if (!userData?.organization_id) {
+      return new NextResponse('Organization not found', { status: 403 })
+    }
+
     // Fetch the invoice
     const { data: invoice, error: invoiceError } = await supabase
       .from('invoices')
       .select('*, line_items(*), clients(*)')
       .eq('id', id)
+      .eq('organization_id', userData.organization_id)
       .single()
 
     if (invoiceError || !invoice) {

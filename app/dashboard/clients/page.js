@@ -7,10 +7,17 @@ export const dynamic = 'force-dynamic'
 export default async function ClientsPage() {
   const supabase = createClient()
   
-  // Safely fetch clients under RLS
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return null
+
+  const { data: userData } = await supabase.from('users').select('organization_id').eq('id', user.id).single()
+  if (!userData?.organization_id) return null
+
+  // Safely fetch clients enforcing organization bounds
   const { data: clients, error } = await supabase
     .from('clients')
     .select('*')
+    .eq('organization_id', userData.organization_id)
     .order('created_at', { ascending: false })
 
   const safeClients = clients || []

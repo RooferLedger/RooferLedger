@@ -104,6 +104,11 @@ export default function InvoiceForm({ activeClients }) {
       a.click()
       window.URL.revokeObjectURL(url)
       
+      // Facebook Pixel Tracking for Invoice Generation
+      if (typeof window !== 'undefined' && window.fbq) {
+        window.fbq('trackCustom', 'GenerateInvoice', { currency: 'USD', value: total });
+      }
+
       alert("Invoice fully processed, logged in Database, and downloaded successfully!")
     } catch (error) {
       console.error(error)

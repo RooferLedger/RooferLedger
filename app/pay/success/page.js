@@ -24,14 +24,10 @@ export default async function PaymentSuccess({ searchParams }) {
     .eq('id', invoiceId)
     .single()
 
-  if (invoice) {
-    // Optimistic Quick-Update to mark as paid (For MVP. Production uses Webhooks)
-    if (invoice.status !== 'paid') {
-      await supabase
-        .from('invoices')
-        .update({ status: 'paid' })
-        .eq('id', invoiceId)
-    }
+  if (invoice && invoice.status === 'sent') {
+    // We no longer optimistically mark it as paid.
+    // Webhooks will handle the state transition to 'processing' or 'paid'.
+    // If they just returned from checkout, it's likely 'processing' or the webhook is in flight.
   }
 
   return (

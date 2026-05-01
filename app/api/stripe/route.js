@@ -27,14 +27,13 @@ export async function POST(req) {
     switch (event.type) {
       case 'customer.subscription.created':
       case 'customer.subscription.updated':
-      case 'customer.subscription.deleted':
+      case 'customer.subscription.deleted': {
         const subscription = event.data.object
         const status = subscription.status
         const customerId = subscription.customer
         
         console.log(`Subscription for customer ${customerId} updated to: ${status}`)
         
-        // Phase 4 Logic (Active Supabase DB Sync):
         const { createClient: createAdminClient } = require('@supabase/supabase-js')
         const supabaseAdmin = createAdminClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY)
 
@@ -44,6 +43,46 @@ export async function POST(req) {
           .eq('stripe_customer_id', customerId)
           
         break
+      }
+      
+      case 'checkout.session.completed': {
+        const sessionCompleted = event.data.object
+        const invoiceId = sessionCompleted.client_reference_id
+        if (!invoiceId) break
+
+        const { createClient: createAdminClient } = require('@supabase/supabase-js')
+        const supabaseAdmin = createAdminClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY)
+        
+        // Cards clear instantly as 'paid'. ACH clears later and initially arrives as 'unpaid'
+        if (sessionCompleted.payment_status === 'paid') {
+          await supabaseAdmin.from('invoices').update({ status: 'paid' }).eq('id', invoiceId)
+        } else if (sessionCompleted.payment_status === 'unpaid') {
+          await supabaseAdmin.from('invoices').update({ status: 'processing' }).eq('id', invoiceId)
+        }
+        break
+      }
+
+      case 'checkout.session.async_payment_succeeded': {
+        const sessionSucceeded = event.data.object
+        const invoiceId = sessionSucceeded.client_reference_id
+        if (!invoiceId) break
+        
+        const { createClient: createAdminClient } = require('@supabase/supabase-js')
+        const supabaseAdmin = createAdminClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY)
+        await supabaseAdmin.from('invoices').update({ status: 'paid' }).eq('id', invoiceId)
+        break
+      }
+
+      case 'checkout.session.async_payment_failed': {
+        const sessionFailed = event.data.object
+        const invoiceId = sessionFailed.client_reference_id
+        if (!invoiceId) break
+        
+        const { createClient: createAdminClient } = require('@supabase/supabase-js')
+        const supabaseAdmin = createAdminClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY)
+        await supabaseAdmin.from('invoices').update({ status: 'sent' }).eq('id', invoiceId)
+        break
+      }
       default:
         console.log(`Unhandled event type ${event.type}`)
     }

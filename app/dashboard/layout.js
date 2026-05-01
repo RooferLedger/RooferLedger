@@ -1,56 +1,24 @@
-'use client'
+import { createClient } from '../../lib/supabase/server'
+import { redirect } from 'next/navigation'
+import ClientLayout from './ClientLayout'
 
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Users, FileText, Settings, LogOut } from 'lucide-react'
-import { signOutAction } from '../actions'
+export default async function DashboardLayout({ children }) {
+  const supabase = createClient()
+  const { data: { user } } = await supabase.auth.getUser()
 
-export default function DashboardLayout({ children }) {
-  const pathname = usePathname()
+  if (!user) {
+    redirect('/login')
+  }
 
-  const navLinks = [
-    { name: 'Overview', href: '/dashboard', icon: LayoutDashboard },
-    { name: 'Clients', href: '/dashboard/clients', icon: Users },
-    { name: 'Invoices', href: '/dashboard/invoices', icon: FileText },
-    { name: 'Settings', href: '/dashboard/settings', icon: Settings },
-  ]
+  const { data: userData } = await supabase
+    .from('users')
+    .select('organization_id')
+    .eq('id', user.id)
+    .single()
 
-  return (
-    <div className="dashboard-layout">
-      <aside className="sidebar">
-        <div className="sidebar-header">
-          RooferLedger.
-        </div>
-        <nav className="sidebar-nav">
-          {navLinks.map((link) => {
-            const Icon = link.icon
-            const isActive = pathname === link.href || (pathname.startsWith(link.href) && link.href !== '/dashboard')
-            return (
-              <Link
-                key={link.name}
-                href={link.href}
-                className={`sidebar-link ${isActive ? 'active' : ''}`}
-              >
-                <Icon size={20} />
-                <span>{link.name}</span>
-              </Link>
-            )
-          })}
-        </nav>
-        
-        <div style={{ marginTop: 'auto' }}>
-          <form action={signOutAction}>
-            <button type="submit" className="sidebar-link" style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--danger)' }}>
-              <LogOut size={20} />
-              <span>Sign Out</span>
-            </button>
-          </form>
-        </div>
-      </aside>
-      
-      <main className="dashboard-content">
-        {children}
-      </main>
-    </div>
-  )
+  if (!userData?.organization_id) {
+    redirect('/onboarding/business')
+  }
+
+  return <ClientLayout>{children}</ClientLayout>
 }

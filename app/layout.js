@@ -1,6 +1,7 @@
 import './globals.css'
 import { Suspense } from 'react'
 import FacebookPixel from './components/FacebookPixel'
+import { Analytics } from '@vercel/analytics/next'
 
 export const metadata = {
   title: 'RooferLedger | The Invoicing Engine for Roofers',
@@ -15,6 +16,7 @@ export default function RootLayout({ children }) {
           <FacebookPixel />
         </Suspense>
         {children}
+        <Analytics />
       </body>
     </html>
   )

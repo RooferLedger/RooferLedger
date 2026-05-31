@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" fill="none">
+  <!-- Outer black frame background -->
+  <rect x="8" y="8" width="144" height="144" stroke="#111827" stroke-width="4" fill="#111827" rx="2" />
+  
+  <!-- Colored Blocks -->
+  <!-- Medium Gray (Top columns 1, 2, 3) -->
+  <rect x="10" y="10" width="110" height="100" fill="#718096" />
+  
+  <!-- Dark Gray (Top-Right, Column 4, Rows 1 & 2) -->
+  <rect x="120" y="10" width="30" height="120" fill="#2d3748" />
+  
+  <!-- Dark Gray (Bottom-Left, Columns 1 & 2, Rows 2 & 3) -->
+  <rect x="10" y="110" width="70" height="40" fill="#2d3748" />
+  
+  <!-- Medium-Dark Gray (Column 3, Row 2) -->
+  <rect x="80" y="110" width="40" height="20" fill="#4a5568" />
+  
+  <!-- Dark Gray (Column 3, Row 3) -->
+  <rect x="80" y="130" width="40" height="20" fill="#2d3748" />
+  
+  <!-- Medium-Dark Gray (Column 4, Row 3) -->
+  <rect x="120" y="130" width="30" height="20" fill="#4a5568" />
+  
+  <!-- Interlocking White Tracks (styled with stroke) -->
+  <g stroke="white" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter">
+    <!-- Outer White Frame (with breaks) -->
+    <!-- Top edge -->
+    <line x1="10" y1="10" x2="150" y2="10" />
+    
+    <!-- Left edge (broken at y=110 and y=130) -->
+    <line x1="10" y1="10" x2="10" y2="108" />
+    <line x1="10" y1="112" x2="10" y2="128" />
+    <line x1="10" y1="132" x2="10" y2="150" />
+    
+    <!-- Right edge (broken at y=110 and y=130) -->
+    <line x1="150" y1="10" x2="150" y2="108" />
+    <line x1="150" y1="112" x2="150" y2="128" />
+    <line x1="150" y1="132" x2="150" y2="150" />
+    
+    <!-- Bottom edge (broken at x=80 and x=120) -->
+    <line x1="10" y1="150" x2="78" y2="150" />
+    <line x1="82" y1="150" x2="118" y2="150" />
+    <line x1="122" y1="150" x2="150" y2="150" />
+    
+    <!-- Inner Interlocking Tracks -->
+    <!-- Vertical divider 1 (x=50) -->
+    <line x1="50" y1="10" x2="50" y2="110" />
+    
+    <!-- Vertical divider 2 (x=80) -->
+    <line x1="80" y1="10" x2="80" y2="155" />
+    
+    <!-- Vertical divider 3 (x=120) -->
+    <line x1="120" y1="10" x2="120" y2="155" />
+    
+    <!-- Horizontal divider 1 (y=110) -->
+    <line x1="5" y1="110" x2="155" y2="110" />
+    
+    <!-- Horizontal divider 2 (y=130) -->
+    <line x1="5" y1="130" x2="155" y2="130" />
+  </g>
+</svg>

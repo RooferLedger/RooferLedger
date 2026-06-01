@@ -2571,9 +2571,64 @@ footer {
   }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 768px) {
   .problem-stats-cards {
     flex-direction: column;
   }
 }
+
+@media (max-width: 480px) {
+  /* Prevent horizontal overflow of the exit path steps in portfolio cards */
+  .exit-path-container {
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+  }
+  
+  .exit-step-arrow {
+    transform: rotate(90deg);
+    margin: 0.1rem 0;
+  }
+
+  .exit-step {
+    width: 100%;
+    max-width: 200px;
+    white-space: normal;
+  }
+
+  /* Prevent overflow/squeeze in inline forms (newsletter signup) */
+  .inline-form {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .inline-form button {
+    width: 100%;
+  }
+
+  /* Optimize padding for the estimator grid and steps on mobile */
+  .estimator-grid {
+    padding: 2rem 1.25rem;
+    gap: 2rem;
+  }
+
+  .results-inner-card {
+    padding: 1.75rem 1.25rem;
+  }
+
+  .roadmap-step {
+    padding: 2rem 1.25rem;
+  }
+
+  /* Avoid text overflow on progress bar steps */
+  .progress-steps {
+    font-size: 0.75rem;
+  }
+
+  /* Prevent mobile navigation menu from overflowing vertically on short screens */
+  .nav-menu {
+    overflow-y: auto;
+  }
+}
+
 

@@ -119,40 +119,19 @@ export default function Home() {
       <div style={{ position: 'absolute', top: '-10%', left: '15%', width: '40vw', height: '40vw', background: 'radial-gradient(circle, rgba(99, 91, 255, 0.12) 0%, rgba(3, 3, 3, 0) 70%)', pointerEvents: 'none', zIndex: 0 }} />
       <div style={{ position: 'absolute', top: '40%', right: '10%', width: '50vw', height: '50vw', background: 'radial-gradient(circle, rgba(0, 242, 254, 0.08) 0%, rgba(3, 3, 3, 0) 70%)', pointerEvents: 'none', zIndex: 0 }} />
 
-      {/* Top Banner */}
-      <div style={{ 
-        background: 'linear-gradient(90deg, rgba(99, 91, 255, 0.15), rgba(0, 242, 254, 0.15))', 
-        borderBottom: '1px solid rgba(255, 255, 255, 0.08)', 
-        padding: '0.85rem 1rem', 
-        textAlign: 'center', 
-        fontSize: '0.9rem', 
-        fontWeight: '500',
-        position: 'relative',
-        zIndex: 10
-      }}>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', justifyContent: 'center' }}>
-          <Zap size={14} style={{ color: '#fbbf24' }} className="pulse-badge" />
-          <span>
-            <strong style={{ color: '#fff' }}>FOUNDERS SLOTS:</strong> Only 
-            <span style={{ backgroundColor: '#ef4444', color: '#fff', padding: '2px 8px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 'bold', margin: '0 6px', display: 'inline-block' }}>14 spots left</span> 
-            to lock in your $99/yr lifetime rate before we move to standard monthly pricing.
-          </span>
-        </div>
-      </div>
-
       {/* Navigation Bar */}
       <nav className="nav-bar" style={{ position: 'relative', zIndex: 10 }}>
         <Link href="/" style={{ textDecoration: 'none', fontSize: '1.6rem', fontWeight: '900', color: '#fff', letterSpacing: '-0.03em' }}>
           Roofer<span className="gradient-text" style={{ fontWeight: '900' }}>Ledger</span>
         </Link>
-        <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '1.75rem', alignItems: 'center' }}>
           <button 
             onClick={() => router.push(isLoggedIn ? '/dashboard' : '/login')}
             style={{ 
               backgroundColor: 'transparent', 
               color: '#8e909a', 
               border: 'none', 
-              padding: '0.5rem 1rem', 
+              padding: '0.5rem 0.5rem', 
               fontWeight: '600', 
               cursor: 'pointer',
             }}
@@ -177,9 +156,6 @@ export default function Home() {
         
         {/* Left: Copy & Form */}
         <div>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', backgroundColor: 'rgba(99, 91, 255, 0.1)', color: '#a5a6f6', padding: '6px 14px', borderRadius: '100px', fontSize: '0.85rem', fontWeight: '600', marginBottom: '1.5rem', border: '1px solid rgba(99, 91, 255, 0.2)' }}>
-            <Zap size={14} style={{ color: 'var(--accent)' }} /> Faster Roofing Cash Flow
-          </div>
           <h1 className="hero-title">
             Get paid <span className="gradient-text">on the roof</span> before you leave the driveway.
           </h1>

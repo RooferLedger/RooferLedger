@@ -222,7 +222,7 @@ export default function Home() {
             />
             <button type="submit" className="btn btn-primary" style={{
               width: 'auto',
-              padding: '0 1.75rem',
+              padding: '1rem 1.75rem',
               fontWeight: '700',
               flexShrink: 0
             }}>
@@ -548,7 +548,7 @@ export default function Home() {
           />
           <button type="submit" className="btn btn-primary" style={{
             width: 'auto',
-            padding: '0 2rem',
+            padding: '1rem 2rem',
             fontWeight: '700',
             flexShrink: 0
           }}>

@@ -1,34 +1,39 @@
+import Link from 'next/link'
+
 export default function OnboardingLayout({ children }) {
   return (
     <div style={{
       minHeight: '100vh',
-      backgroundColor: '#0d1117',
+      backgroundColor: '#030303',
+      backgroundImage: 'radial-gradient(circle at 50% 15%, rgba(99, 91, 255, 0.12) 0%, transparent 60%)',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      padding: '2rem 1rem'
+      padding: '3rem 1rem 4rem 1rem',
+      position: 'relative',
+      overflow: 'hidden'
     }}>
-      <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
-        <h1 style={{ fontSize: '1.8rem', color: 'var(--primary)', fontWeight: 'bold', margin: '0' }}>RooferLedger</h1>
-        <p style={{ margin: '0.5rem 0 0', color: '#a1a1aa' }}>Account Setup</p>
+      <div style={{ marginBottom: '2rem', textAlign: 'center', zIndex: 5 }}>
+        <Link href="/" style={{ fontSize: '1.8rem', color: '#fff', fontWeight: '900', letterSpacing: '-0.03em' }}>
+          Roofer<span className="gradient-text">Ledger</span>
+        </Link>
+        <p style={{ margin: '0.5rem 0 0', color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: '500', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+          Setup Command Center
+        </p>
       </div>
 
-      <div style={{
+      <div className="form-card" style={{
         width: '100%',
         maxWidth: '500px',
-        backgroundColor: 'var(--surface)',
-        border: '1px solid var(--border)',
-        borderRadius: '16px',
-        padding: '2.5rem',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+        zIndex: 5,
         position: 'relative'
       }}>
         {children}
       </div>
 
-      <div style={{ marginTop: '2rem', color: '#8b949e', fontSize: '0.85rem' }}>
-        Need help? Contact support@rooferledger.com
+      <div style={{ marginTop: '2.5rem', color: 'var(--text-muted)', fontSize: '0.85rem', zIndex: 5, textAlign: 'center' }}>
+        Need assistance? Email <a href="mailto:support@rooferledger.com" style={{ color: 'var(--primary)', textDecoration: 'underline' }}>support@rooferledger.com</a>
       </div>
     </div>
   )

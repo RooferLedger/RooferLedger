@@ -1,6 +1,13 @@
 import './globals.css'
 import { Suspense } from 'react'
 import FacebookPixel from './components/FacebookPixel'
+import { Outfit } from 'next/font/google'
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700', '800', '900'],
+  display: 'swap',
+})
 
 export const metadata = {
   title: 'RooferLedger | The Invoicing Engine for Roofers',
@@ -10,7 +17,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
+      <body className={outfit.className}>
         <Suspense fallback={null}>
           <FacebookPixel />
         </Suspense>

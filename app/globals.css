@@ -747,3 +747,34 @@ tr:hover td {
 td {
   transition: background-color 0.2s ease;
 }
+
+/* Interactive Demo Mobile Optimizations */
+.demo-metric-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.demo-invoice-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 12px;
+  padding: 1rem;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 480px) {
+  .demo-metric-grid {
+    grid-template-columns: 1fr;
+  }
+  .demo-invoice-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .demo-invoice-row > div:last-child {
+    align-self: flex-end;
+  }
+}

@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { ArrowRight, CheckCircle2, Zap, Smartphone, DollarSign, FileText, Star, ShieldCheck, HelpCircle, ChevronDown, ChevronUp, Lock } from 'lucide-react'
 import { createClient } from '../lib/supabase/client'
 import { event } from './components/FacebookPixel'
+import InteractiveHeroDemo from './components/InteractiveHeroDemo'
 
 
 export default function Home() {
@@ -240,22 +241,7 @@ export default function Home() {
             pointerEvents: 'none'
           }}></div>
           
-          <div style={{ 
-            backgroundColor: '#0a0a0f', 
-            border: '1px solid rgba(255, 255, 255, 0.1)', 
-            borderRadius: '24px', 
-            overflow: 'hidden',
-            boxShadow: '0 30px 60px -15px rgba(0, 0, 0, 0.9), 0 0 40px rgba(99, 91, 255, 0.15)',
-            position: 'relative',
-            zIndex: 1,
-            padding: '8px'
-          }}>
-            <img 
-              src="/hero-mockup-v2.png" 
-              alt="Professional roofer generating an invoice on a smartphone while on a roof" 
-              style={{ width: '100%', borderRadius: '18px', display: 'block' }} 
-            />
-          </div>
+          <InteractiveHeroDemo />
         </div>
 
       </div>
